@@ -1,0 +1,25 @@
+1.
+
+h1(x) = x mod 3				--> 110
+h2(x) = (x mod 4) mod 3		--> 110
+
+
+2.
+
+Change the bit array to counter array to support the deletion on bloom filter: increment on insert, decrement on delete.
+
+
+3.
+
+No. This is because everytime if x is seen in S, it increments the positions for i in 1..d where h_i(x) happens to map it by 1. If the count of x is asked later, it thus always
+returns >= realCount(x) because when the min-function is taken on positions that were incremented by one for each seen x in the S.
+
+
+4.
+
+Biased estimation. Based on the example shown in lecture slides, most of the estimates were actually over estimates because each cell ended up getting value >= 1. If thus count of any item that was not seen in S would be asked, this count would be interpreted as at least 1 as well.
+
+
+5.
+
+Slidet

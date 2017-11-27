@@ -1,0 +1,17 @@
+1. A B C D
+
+2. C D
+
+3. A B D
+
+4. A B C
+
+5. A C
+
+6. B C D
+
+7. A B
+
+8. A B D
+
+9. A C D
