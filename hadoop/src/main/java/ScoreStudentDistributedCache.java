@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,52 +12,23 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.filecache.DistributedCache;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class ScoreStudentDistributedCache {
 
-    public static String scoresPath = null;
-
     public static class JoinMapper extends Mapper <Object, Text, Text, Text> {
 
         private Map<String, String> scores = new HashMap<String, String>();
 
+
         protected void setup(Context context) throws IOException, InterruptedException {
-            readFile();
 
-            /*try {
-                Path[] cacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
-
-                if (cacheFiles != null && cacheFiles.length > 0) {
-                    for (Path scoresFile : cacheFiles) {
-                        readFile(scoresFile);
-                    }
-                }
-            } catch (IOException ex) {
-                System.err.println("Exception in mapper setup: " + ex.getMessage());
-            }*/
-        }
-
-        protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            String[] parts = value.toString().split(",");
-
-            int yearOfBirth = Integer.parseInt(parts[2]);
-
-            if (yearOfBirth > 1990) {
-                String scoresString = scores.get(parts[0]);
-
-                if (scoresString != null) {
-                    context.write(new Text(parts[0]), new Text(mkString(parts, 1) + scoresString));
-                }
-            }
-        }
-
-        private void readFile() {
+            URI fileUri = context.getCacheFiles()[0];
+            String filePath = fileUri.getPath();
 
             try {
-                BufferedReader bufferedReader = new BufferedReader(new FileReader(scoresPath));
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
                 String score = null;
 
                 while ((score = bufferedReader.readLine()) != null) {
@@ -70,7 +42,21 @@ public class ScoreStudentDistributedCache {
                     }
                 }
             } catch (IOException ex) {
-                System.err.println("Exception while reading stop words file: " + ex.getMessage());
+                System.err.printf("Exception while reading file %s. Exception: %s", filePath, ex.getMessage());
+            }
+        }
+
+        protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+            String[] parts = value.toString().split(",");
+
+            int yearOfBirth = Integer.parseInt(parts[2]);
+
+            if (yearOfBirth > 1990) {
+                String scoresString = scores.get(parts[0]);
+
+                if (scoresString != null) {
+                    context.write(new Text(parts[0]), new Text(mkString(parts, 1) + scoresString));
+                }
             }
         }
     }
@@ -92,22 +78,16 @@ public class ScoreStudentDistributedCache {
         Configuration conf = new Configuration();
 
         Job job = Job.getInstance(conf, "score-student distributed cache join");
-        job.setJarByClass(ScoreStudent.class);
+        job.setJarByClass(ScoreStudentDistributedCache.class);
         job.setMapperClass(JoinMapper.class);
         job.setReducerClass(ScoreStudentDistributedCacheReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 
-        scoresPath = args[0];
-        DistributedCache.addCacheFile(new Path(scoresPath).toUri(), job.getConfiguration());
+        job.addCacheFile(new Path(args[0]).toUri());
 
         FileInputFormat.addInputPath(job, new Path(args[1]));
-
-        Path outputPath = new Path(args[2]);
-
-        FileOutputFormat.setOutputPath(job, outputPath);
-
-        // outputPath.getFileSystem(conf).delete(outputPath);
+        FileOutputFormat.setOutputPath(job, new Path(args[2]));
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
