@@ -17,27 +17,26 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 public class ScoreStudentDistributedCache {
 
+    public static String scoresPath = null;
+
     public static class JoinMapper extends Mapper <Object, Text, Text, Text> {
 
         private Map<String, String> scores = new HashMap<String, String>();
 
         protected void setup(Context context) throws IOException, InterruptedException {
+            readFile();
 
-            try {
+            /*try {
                 Path[] cacheFiles = DistributedCache.getLocalCacheFiles(context.getConfiguration());
 
                 if (cacheFiles != null && cacheFiles.length > 0) {
-                    System.out.printf("Amount of cache files: %d\n", cacheFiles.length);
-
                     for (Path scoresFile : cacheFiles) {
                         readFile(scoresFile);
                     }
                 }
-
-                System.out.printf("Cache files read. Size of scores: %d\n", scores.size());
             } catch (IOException ex) {
                 System.err.println("Exception in mapper setup: " + ex.getMessage());
-            }
+            }*/
         }
 
         protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
@@ -54,10 +53,10 @@ public class ScoreStudentDistributedCache {
             }
         }
 
-        private void readFile(Path filePath) {
+        private void readFile() {
 
             try {
-                BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath.toString()));
+                BufferedReader bufferedReader = new BufferedReader(new FileReader(scoresPath));
                 String score = null;
 
                 while ((score = bufferedReader.readLine()) != null) {
@@ -99,9 +98,10 @@ public class ScoreStudentDistributedCache {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 
-        FileInputFormat.addInputPath(job, new Path(args[0]));
+        scoresPath = args[0];
+        DistributedCache.addCacheFile(new Path(scoresPath).toUri(), job.getConfiguration());
 
-        DistributedCache.addCacheFile(new Path(args[1]).toUri(), job.getConfiguration());
+        FileInputFormat.addInputPath(job, new Path(args[1]));
 
         Path outputPath = new Path(args[2]);
 
