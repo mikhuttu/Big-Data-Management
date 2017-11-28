@@ -2,6 +2,7 @@ import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -39,7 +40,7 @@ public class ScoreStudent {
         }
     }
 
-    public static class JoinReducer extends Reducer <Text, Text, Text, Text> {
+    public static class JoinReducer extends Reducer <Text, Text, NullWritable, Text> {
 
         public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 
@@ -62,8 +63,10 @@ public class ScoreStudent {
             }
 
             if (scoresData != null && studentData != null) {
-                System.out.printf("Writing data for student %s", key.toString());
-                context.write(key, new Text(studentData + scoresData));
+                String studentId = key.toString();
+
+                System.out.printf("Writing data for student %s\n", studentId);
+                context.write(NullWritable.get(), new Text(studentId + "," + studentData + scoresData));
             }
         }
     }
