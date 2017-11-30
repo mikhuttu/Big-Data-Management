@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 
 import org.apache.hadoop.conf.Configuration;
@@ -14,44 +12,34 @@ import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.bloom.BloomFilter;
-import org.apache.hadoop.util.bloom.Key
+import org.apache.hadoop.util.bloom.Key;
 
 public class ScoreStudentBloomFilter {
+
+    // initialise the bloom filter in main function
+    // write student ids in distributed cache
 
     public static class ScoresMapper extends Mapper <Object, Text, Text, Text> {
 
         public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+            // System.out.println("Executing ScoresMapper");
+
             String[] parts = value.toString().split(",");
 
             int score1 = Integer.parseInt(parts[1]);
             int score2 = Integer.parseInt(parts[2]);
 
             if (score1 > 80 && score2 <= 95) {
+                // System.out.println("Taking score of " + parts[0] + " to reducer");
                 context.write(new Text(parts[0]), new Text("score\t" + mkString(parts, 1)));
             }
         }
     }
 
-    /**
-     * 1. Initialise a bloom filter in the setup() method of the Mapper class (the filter object itself should be global so that it can be accessed by the map() method later):
-
-     2. filter = new BloomFilter(VECTOR_SIZE,NB_HASH,HASH_TYPE);
-
-     3. Read the smaller table into the setup() method of the Mapper.
-
-     4. Add the ID of each record to a bloom filter:
-        filter.add(ID);
-
-     5. In the map() method itself, use filter.membershipTest(ID) on any IDs from the larger input source.
-        If there is no match, you know that the ID isn't present in your smaller dataset, and so shouldn't be passed to the reducer.
-
-        Remember that you will get false positives in the reducer, so don't assume everything will be joined.
-     */
 
     public static class StudentsMapper extends Mapper <Object, Text, Text, Text> {
 
-        private BloomFilter scoreFilter = new BloomFilter(10000, 100, 0);
-
+        private BloomFilter scoreFilter = new BloomFilter(); //(10000, 100, 0);
 
         protected void setup(Context context) throws IOException, InterruptedException {
 
@@ -59,7 +47,12 @@ public class ScoreStudentBloomFilter {
             String filePath = fileUri.getPath();
 
             try {
-                BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+                /*DataInputStream stream = new DataInputStream(new FileInputStream("./score"));
+
+                scoreFilter.readFields(stream);
+                stream.close();*/
+
+                BufferedReader bufferedReader = new BufferedReader(new FileReader("./score"));
                 String score = null;
 
                 while ((score = bufferedReader.readLine()) != null) {
@@ -70,6 +63,7 @@ public class ScoreStudentBloomFilter {
                     int score2 = Integer.parseInt(parts[2]);
 
                     if (score1 > 80 && score2 <= 95) {
+                        System.out.println("Adding score " + parts[0] + " to scoreFilter");
                         scoreFilter.add(new Key(parts[0].getBytes()));
                     }
                 }
@@ -80,13 +74,18 @@ public class ScoreStudentBloomFilter {
 
 
         protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+            System.out.println("Executing StudentsMapper");
+
             String[] parts = value.toString().split(",");
 
             int yearOfBirth = Integer.parseInt(parts[2]);
 
             if (yearOfBirth > 1990) {
 
+                System.out.println("Testing membership of " + parts[0]);
+
                 if (scoreFilter.membershipTest(new Key(parts[0].getBytes()))) {
+                    System.out.println("Taking data of student " + parts[0] + " to reducer");
                     context.write(new Text(parts[0]), new Text("student\t" + mkString(parts, 1)));
                 }
             }
@@ -136,6 +135,8 @@ public class ScoreStudentBloomFilter {
 
         MultipleInputs.addInputPath(job, new Path(args[0]), TextInputFormat.class, ScoresMapper.class);
         MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, StudentsMapper.class);
+
+        job.addCacheFile(new URI(args[0] + "#score"));
 
         FileOutputFormat.setOutputPath(job, new Path(args[2]));
 

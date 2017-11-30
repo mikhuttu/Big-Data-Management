@@ -25,10 +25,10 @@ public class ScoreStudentDistributedCache {
         protected void setup(Context context) throws IOException, InterruptedException {
 
             URI fileUri = context.getCacheFiles()[0];
-            String filePath = fileUri.getPath();
+            String filePath = fileUri.getPath(); // only for not null check
 
             try {
-                BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+                BufferedReader bufferedReader = new BufferedReader(new FileReader("./score"));
                 String score = null;
 
                 while ((score = bufferedReader.readLine()) != null) {
@@ -84,7 +84,8 @@ public class ScoreStudentDistributedCache {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
 
-        job.addCacheFile(new Path(args[0]).toUri());
+        job.addCacheFile(new URI(args[0] + "#score"));
+        //job.addCacheFile(new Path(args[0]).toUri());
 
         FileInputFormat.addInputPath(job, new Path(args[1]));
         FileOutputFormat.setOutputPath(job, new Path(args[2]));
