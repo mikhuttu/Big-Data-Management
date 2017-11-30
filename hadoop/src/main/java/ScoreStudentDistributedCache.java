@@ -21,7 +21,6 @@ public class ScoreStudentDistributedCache {
 
         private Map<String, String> scores = new HashMap<String, String>();
 
-
         protected void setup(Context context) throws IOException, InterruptedException {
 
             URI fileUri = context.getCacheFiles()[0];
@@ -55,7 +54,7 @@ public class ScoreStudentDistributedCache {
                 String scoresString = scores.get(parts[0]);
 
                 if (scoresString != null) {
-                    context.write(new Text(parts[0]), new Text(mkString(parts, 1) + scoresString));
+                    context.write(new Text(parts[0]), new Text(mkString(parts, 1) + "," + scoresString));
                 }
             }
         }
@@ -63,13 +62,10 @@ public class ScoreStudentDistributedCache {
 
     public static class ScoreStudentDistributedCacheReducer extends Reducer <Text, Text, NullWritable, Text> {
 
-        public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+        protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 
             for (Text data : values) {
-                String studentId = key.toString();
-
-                System.out.printf("Writing data for student %s\n", studentId);
-                context.write(NullWritable.get(), new Text(studentId + "," + data));
+                context.write(NullWritable.get(), new Text(key.toString() + "," + data));
             }
         }
     }

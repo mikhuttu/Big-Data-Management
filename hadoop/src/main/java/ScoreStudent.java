@@ -15,7 +15,8 @@ public class ScoreStudent {
 
     public static class ScoresMapper extends Mapper <Object, Text, Text, Text> {
 
-        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+        protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+
             String[] parts = value.toString().split(",");
 
             int score1 = Integer.parseInt(parts[1]);
@@ -29,7 +30,8 @@ public class ScoreStudent {
 
     public static class StudentsMapper extends Mapper <Object, Text, Text, Text> {
 
-        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+        protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+
             String[] parts = value.toString().split(",");
 
             int yearOfBirth = Integer.parseInt(parts[2]);
@@ -42,7 +44,7 @@ public class ScoreStudent {
 
     public static class JoinReducer extends Reducer <Text, Text, NullWritable, Text> {
 
-        public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
+        protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 
             String scoresData = null;
             String studentData = null;
@@ -63,10 +65,7 @@ public class ScoreStudent {
             }
 
             if (scoresData != null && studentData != null) {
-                String studentId = key.toString();
-
-                System.out.printf("Writing data for student %s\n", studentId);
-                context.write(NullWritable.get(), new Text(studentId + "," + studentData + scoresData));
+                context.write(NullWritable.get(), new Text(key.toString() + "," + studentData + "," +  scoresData));
             }
         }
     }
@@ -85,8 +84,6 @@ public class ScoreStudent {
         Path outputPath = new Path(args[2]);
 
         FileOutputFormat.setOutputPath(job, outputPath);
-
-        // outputPath.getFileSystem(conf).delete(outputPath);
 
         System.exit(job.waitForCompletion(true) ? 0 : 1);
     }
