@@ -14,6 +14,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
+import org.omg.SendingContext.RunTime;
 
 public class EditDistance {
 
@@ -79,13 +80,44 @@ public class EditDistance {
     }
 
     public static void main(String[] args) throws Exception {
-        Configuration conf = new Configuration();
 
-        Job job1 = Job.getInstance(conf, "edit-distance job 1");
+        if (args.length < 4) {
+            throw new IllegalArgumentException("Too few arguments given.");
+        }
+
+        String table1FilePath = args[0];
+        if (args.length > 4) {
+            table1FilePath = args[4] + table1FilePath;
+        }
+
+        threshold = Integer.parseInt(args[3]);
+
+
+        // Initialise job1
+
+        Configuration conf1 = new Configuration();
+
+        Job job1 = Job.getInstance(conf1, "edit-distance job 1");
+        job1.setJarByClass(EditDistance.class);
         job1.setMapperClass(Distance1Mapper.class);
         job1.setReducerClass(Distance1Reducer.class);
+        job1.setOutputKeyClass(Text.class);
+        job1.setOutputValueClass(Text.class);
 
-        Job job2 = Job.getInstance(conf, "edit-distance job 2");
+        Path middleOutPut = new Path("job1-out");
+
+        FileInputFormat.addInputPath(job1, new Path(args[1]));
+
+        FileOutputFormat.setOutputPath(job1, middleOutPut);
+        middleOutPut.getFileSystem(conf1).delete(middleOutPut);
+
+
+        // Initialise job2
+
+        Configuration conf2 = new Configuration();
+
+        Job job2 = Job.getInstance(conf2, "edit-distance job 2");
+        job2.setJarByClass(EditDistance.class);
         job2.setMapperClass(Distance2Mapper.class);
         job2.setReducerClass(Distance2Reducer.class);
         job2.setOutputKeyClass(Text.class);
@@ -94,17 +126,11 @@ public class EditDistance {
         job1.setOutputFormatClass(SequenceFileOutputFormat.class);
         job2.setInputFormatClass(SequenceFileInputFormat.class);
 
-
-        String table1FilePath = args[0];
-        if (args.length > 4) {
-            table1FilePath = args[4] + table1FilePath;
-        }
-
-        FileInputFormat.addInputPath(job1, new Path(args[1]));
+        FileInputFormat.addInputPath(job2, middleOutPut);
         FileOutputFormat.setOutputPath(job2, new Path(args[2]));
 
-        threshold = Integer.parseInt(args[3]);
 
+        // Start execution
 
         System.out.printf("Reading table 1...\n");
         long startTime = System.currentTimeMillis();
@@ -114,8 +140,9 @@ public class EditDistance {
         long endTime = System.currentTimeMillis();
         System.out.printf("Table 1 read. Contained %d words. Took %d milliseconds\"\n\n", table1Words.size(), endTime - startTime);
 
-
-        System.exit(job1.waitForCompletion(true) ? 0 : 1);
+        if (job1.waitForCompletion(true)) {
+            System.exit(job2.waitForCompletion(true) ? 0 : 1);
+        }
     }
 
     private static Set<Text> readWords(String tableFilePath) throws IOException {
