@@ -1,0 +1,26 @@
+Given two strings s1 and s2 with the same length n:
+If the edit distance threshold is t, the number of overlapping q-grams is at least n - q + 1 - tq = n + 1 - q(t + 1).
+
+
+q: 2
+
+t: 1 -->
+ Min overlapping 2-grams: n + 1 - 2 * 2 = n - 3
+
+t: 2 -->
+ Min overlapping 2-grams: n + 1 - 2 * 3 = n - 5
+
+
+ In hadoop exercise 2, n = 12.
+
+
+ Toteutusidea:
+- Main functionissa luetaan ensimmäinen tiedosto läpi ja otetaan talteen erilliset sanat
+
+  - 1 mapper function, joka käsittelee toisen rivit ja mäppää sanat jokaiselle 1. tiedoston sanalle muotoon <"key", String>. Tässä String comma separated lista q-grameja. Listan eka alkio tosin alkuperäinen sana. "key" vastaa ekan tiedoston sanaa.
+
+- 1 reducer function, joka määrittää ensin q-gramit avaimelle. Kaikkia arvoja (= kaikki toisen tiedoston sanat) kohti määritetään "min. overlapping q-grams", ja jos tämä väh. 9 (12 - 3) tai 7 (12 - 5) riippuen käytettävästä thresholdista, lähetetään ko. sanapari eteenpäin sanaparina, joiden edit distance mahd. 0 - 2.
+
+- 1 mapper function, joka ottaa vastaan yo. reducerin tuottamia sanapareja ja laskee näille edit distancen. Jos edit distance <= 1 tai <= 2 (riippuen tilanteesta), kirjoitetaan tämä sanapari kontekstiin tietyllä avaimella "sana1-sana2" ja arvolla String: sana1, sana2.
+
+- 1 reducer function, joka ottaa vastaan yo. avaimella olevia sanapareja. Kirjoittaa kontekstiin aina ainoastaan ensimmäisen sanaparin (= poistaa duplikaatit).
