@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,7 +18,7 @@ import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 public class EditDistance {
 
     public static Set<Text> table1Words = null; // distinct words from table1.txt
-    public static int wordLength = 12;
+    public static int wordLength;
     public static int gramLength = 2;
     public static int threshold;
 
@@ -49,7 +48,7 @@ public class EditDistance {
 
                 if (enoughOverLappingGrams(grams1, grams2)) {
                     String word = value.substring(0, wordLength);
-                    System.out.printf("Enough overlapping 2-grams for words %s and %s", key.toString(), word);
+                    System.out.printf("Enough overlapping 2-grams for words %s and %s\n", key.toString(), word);
                     context.write(key, new Text(word));
                 }
             }
@@ -64,7 +63,7 @@ public class EditDistance {
             String w2 = value.toString();
 
             if (editDistance(w1, w2) == threshold) {
-                System.out.printf("Edit distance (%s, %s) <= %d", w1, w2, threshold);
+                System.out.printf("Edit distance (%s, %s) == %d\n", w1, w2, threshold);
                 context.write(key, value);
             }
         }
@@ -74,31 +73,34 @@ public class EditDistance {
 
         protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 
-            Iterator<Text> iterator = values.iterator();
+            boolean first = true;
 
-            Text value = iterator.next();
+            for (Text value : values) {
 
-            System.out.printf("Outputting (%s, %s)", key.toString(), value.toString());
-            context.write(key, value);
-
-            while ((value = iterator.next()) != null) {
-                System.out.printf("Ignoring duplicate (%s, %s)", key.toString(), value.toString());
+                if (first) {
+                    System.out.printf("Outputting (%s, %s)\n", key.toString(), value.toString());
+                    context.write(key, value);
+                    first = false;
+                } else {
+                    System.out.printf("Ignoring duplicate (%s, %s)\n", key.toString(), value.toString());
+                }
             }
         }
     }
 
     public static void main(String[] args) throws Exception {
 
-        if (args.length < 4) {
+        if (args.length < 5) {
             throw new IllegalArgumentException("Too few arguments given.");
         }
 
         String table1FilePath = args[0];
-        if (args.length > 4) {
-            table1FilePath = args[4] + table1FilePath;
+        if (args.length > 5) {
+            table1FilePath = args[5] + table1FilePath;
         }
 
         threshold = Integer.parseInt(args[3]);
+        wordLength = Integer.parseInt(args[4]);
 
 
         // Initialise job1
@@ -117,7 +119,6 @@ public class EditDistance {
         FileInputFormat.addInputPath(job1, new Path(args[1]));
 
         FileOutputFormat.setOutputPath(job1, middleOutPut);
-        middleOutPut.getFileSystem(conf1).delete(middleOutPut);
 
 
         // Initialise job2
@@ -149,7 +150,7 @@ public class EditDistance {
         System.out.printf("Table 1 read. Found %d distinct words. Took %d milliseconds\"\n\n", table1Words.size(), endTime - startTime);
 
         if (job1.waitForCompletion(true)) {
-            System.out.println("Job1 execution complete...");
+            System.out.println("\nJob1 execution complete...\n");
             System.exit(job2.waitForCompletion(true) ? 0 : 1);
         }
     }
