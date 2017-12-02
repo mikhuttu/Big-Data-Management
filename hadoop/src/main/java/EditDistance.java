@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -14,7 +15,6 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
-import org.omg.SendingContext.RunTime;
 
 public class EditDistance {
 
@@ -49,6 +49,7 @@ public class EditDistance {
 
                 if (enoughOverLappingGrams(grams1, grams2)) {
                     String word = value.substring(0, wordLength);
+                    System.out.printf("Enough overlapping 2-grams for words %s and %s", key.toString(), word);
                     context.write(key, new Text(word));
                 }
             }
@@ -62,7 +63,8 @@ public class EditDistance {
             String w1 = key.toString();
             String w2 = value.toString();
 
-            if (editDistance(w1, w2) <= threshold) {
+            if (editDistance(w1, w2) == threshold) {
+                System.out.printf("Edit distance (%s, %s) <= %d", w1, w2, threshold);
                 context.write(key, value);
             }
         }
@@ -72,9 +74,15 @@ public class EditDistance {
 
         protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 
-            for (Text value : values) {
-                context.write(key, value);
-                break;
+            Iterator<Text> iterator = values.iterator();
+
+            Text value = iterator.next();
+
+            System.out.printf("Outputting (%s, %s)", key.toString(), value.toString());
+            context.write(key, value);
+
+            while ((value = iterator.next()) != null) {
+                System.out.printf("Ignoring duplicate (%s, %s)", key.toString(), value.toString());
             }
         }
     }
@@ -138,9 +146,10 @@ public class EditDistance {
         table1Words = readWords(table1FilePath);
 
         long endTime = System.currentTimeMillis();
-        System.out.printf("Table 1 read. Contained %d words. Took %d milliseconds\"\n\n", table1Words.size(), endTime - startTime);
+        System.out.printf("Table 1 read. Found %d distinct words. Took %d milliseconds\"\n\n", table1Words.size(), endTime - startTime);
 
         if (job1.waitForCompletion(true)) {
+            System.out.println("Job1 execution complete...");
             System.exit(job2.waitForCompletion(true) ? 0 : 1);
         }
     }
