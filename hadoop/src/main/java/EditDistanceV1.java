@@ -15,7 +15,7 @@ import org.apache.hadoop.mapreduce.lib.input.SequenceFileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.SequenceFileOutputFormat;
 
-public class EditDistance {
+public class EditDistanceV1 {
 
     public static Set<Text> table1Words = null; // distinct words from table1.txt
     public static int wordLength;
@@ -29,6 +29,8 @@ public class EditDistance {
 
             String word = value.toString();
 
+            System.out.printf("Index: %s, word: %s\n", key.toString(), word);
+
             for (Text s : table1Words) {
                 context.write(s, new Text(word + "," +  commaSeparatedGrams(word)));
             }
@@ -41,10 +43,12 @@ public class EditDistance {
 
             String[] grams1 = commaSeparatedGrams(key.toString()).split(",");
 
+            System.out.printf("Reduce key: %s", key.toString());
+
             for (Text t : values) {
                 String value = t.toString();
 
-                String[] grams2 = value.substring(wordLength + 2).split(",");
+                String[] grams2 = value.substring(wordLength + 1).split(",");
 
                 if (enoughOverLappingGrams(grams1, grams2)) {
                     String word = value.substring(0, wordLength);
@@ -108,7 +112,7 @@ public class EditDistance {
         Configuration conf1 = new Configuration();
 
         Job job1 = Job.getInstance(conf1, "edit-distance job 1");
-        job1.setJarByClass(EditDistance.class);
+        job1.setJarByClass(EditDistanceV1.class);
         job1.setMapperClass(Distance1Mapper.class);
         job1.setReducerClass(Distance1Reducer.class);
         job1.setOutputKeyClass(Text.class);
@@ -126,7 +130,7 @@ public class EditDistance {
         Configuration conf2 = new Configuration();
 
         Job job2 = Job.getInstance(conf2, "edit-distance job 2");
-        job2.setJarByClass(EditDistance.class);
+        job2.setJarByClass(EditDistanceV1.class);
         job2.setMapperClass(Distance2Mapper.class);
         job2.setReducerClass(Distance2Reducer.class);
         job2.setOutputKeyClass(Text.class);
@@ -151,7 +155,7 @@ public class EditDistance {
 
         if (job1.waitForCompletion(true)) {
             System.out.println("\nJob1 execution complete...\n");
-            System.exit(job2.waitForCompletion(true) ? 0 : 1);
+            System.exit(job2.waitForCompletion(true) ? 0: 1);
         }
     }
 
@@ -212,33 +216,44 @@ public class EditDistance {
         return false;
     }
 
-    public static int editDistance(String s1, String s2) {
+    public static int editDistance(String word1, String word2) {
+        int len1 = word1.length();
+        int len2 = word2.length();
 
-        int lengthS1 = s1.length();
-        int lengthS2 = s2.length();
+        // len1+1, len2+1, because finally return dp[len1][len2]
+        int[][] dp = new int[len1 + 1][len2 + 1];
 
-        int edits[][] = new int[lengthS1 + 1][lengthS2 + 1];
+        for (int i = 0; i <= len1; i++) {
+            dp[i][0] = i;
+        }
 
-        for (int i = 0; i <= lengthS1; i++)
-            edits[i][0] = i;
+        for (int j = 0; j <= len2; j++) {
+            dp[0][j] = j;
+        }
 
-        for (int j = 1; j <= lengthS2; j++)
-            edits[0][j] = j;
+        //iterate though, and check last char
+        for (int i = 0; i < len1; i++) {
+            char c1 = word1.charAt(i);
+            for (int j = 0; j < len2; j++) {
+                char c2 = word2.charAt(j);
 
+                //if last two chars equal
+                if (c1 == c2) {
+                    //update dp value for +1 length
+                    dp[i + 1][j + 1] = dp[i][j];
+                } else {
+                    int replace = dp[i][j] + 1;
+                    int insert = dp[i][j + 1] + 1;
+                    int delete = dp[i + 1][j] + 1;
 
-        for (int i = 1; i <= lengthS1; i++) {
-            for (int j = 1; j <= lengthS2; j++) {
-
-                edits[i][j]= Math.min(
-                        edits[i-1][j] + 1,
-                        Math.min(
-                                edits[i][j-1] + 1,
-                                edits[i-1][j-1] + s1.charAt(i-1) == s2.charAt(j-1) ? 0 : 1
-                        )
-                );
+                    int min = replace > insert ? insert : replace;
+                    min = delete > min ? min : delete;
+                    dp[i + 1][j + 1] = min;
+                }
             }
         }
-        return edits[lengthS1][lengthS2];
+
+        return dp[len1][len2];
     }
 
 }
