@@ -101,6 +101,30 @@ public class EditDistanceV3 {
         wordLength = Integer.parseInt(args[4]);
 
 
+        /*String originalWord = "0123456789ab";
+
+        Set<String> nearestNeighbours = new HashSet<String>();
+        nearestNeighbours.add(originalWord);
+
+        for (int t = threshold; t > 0; t--) {
+            Set<String> current = new HashSet<String>(nearestNeighbours);
+
+            for (String word : current) {
+                Set<String> nearest = nextInEditDistance(word, t - 1);
+                nearestNeighbours.addAll(nearest);
+            }
+        }
+
+        int i = 0;
+        for (String neighbour : nearestNeighbours) {
+            if (neighbour.length() == wordLength) {
+                i += 1;
+                System.out.println(neighbour);
+            }
+
+        }
+        System.out.println(i);*/
+
         // Start execution
 
         if (job.waitForCompletion(true)) {

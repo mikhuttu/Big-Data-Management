@@ -66,7 +66,7 @@ public class EditDistanceV1 {
             String w1 = key.toString();
             String w2 = value.toString();
 
-            if (editDistance(w1, w2) == threshold) {
+            if (editDistance(w1, w2) <= threshold) {
                 System.out.printf("Edit distance (%s, %s) == %d\n", w1, w2, threshold);
                 context.write(key, value);
             }
