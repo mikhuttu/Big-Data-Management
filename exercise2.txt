@@ -1,0 +1,13 @@
+Map workers:
+1. Outputtaa pari: {key: sana, t1: sana}
+2. Määritä jokaiselle sanalle kaikki thresholdin 1 tai 2 päässä olevat muut sanat. Passaa reducerille formaatissa {key: "thresholdin päässä oleva sana", value: t2 + alkuperäinen sana"}. Threshold 2 hoituu samalla funktiolla kutsuen loopissa.
+
+1. Reducer:
+Filteröi ulos duplikaatit (jos useamassa sama value, valitse yksi)
+Outputtaa parit {t1sana, t2sana} johonkin tiedostoon
+
+2. Mapper:
+Outputtaa {key: t1sana,t2sana, value: {t1sana,t2sana}}
+
+2. Reducer:
+Valitse ensimmäinen key ja outputtaa value

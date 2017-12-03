@@ -4,40 +4,48 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class EditDistanceV3 {
 
-    public static Set<String> table1Words = null; // distinct words from table1.txt
-    public static int wordLength;
-    public static int gramLength = 2;
-    public static int threshold;
+    public static String alphabet = "01234567890abcdefgm";
+    public static int wordLength, threshold;
 
 
-    public static class DistanceMapper extends Mapper<Object, Text, Text, Text> {
+    public static class DistanceT1Mapper extends Mapper<Object, Text, Text, Text> {
+
+        protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+            context.write(value, new Text("\t1" + value.toString()));
+        }
+    }
+
+    public static class DistanceT2Mapper extends Mapper<Object, Text, Text, Text> {
 
         protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
 
-            String word1 = value.toString();
-            String[] grams1 = commaSeparatedGrams(word1).split(",");
+            String originalWord = value.toString();
 
-            for (String word2 : table1Words) {
-                String[] grams2 = commaSeparatedGrams(word2).split(",");
+            Set<String> nearestNeighbours = new HashSet<String>();
+            nearestNeighbours.add(originalWord);
 
-                if (enoughOverLappingGrams(grams1, grams2)) {
-                    System.out.printf("Enough overlapping 2-grams for words %s and %s\n", word1, word2);
+            for (int t = threshold; t > 0; t--) {
+                Set<String> current = new HashSet<String>(nearestNeighbours);
 
-                    if (editDistance(word1, word2) <= threshold) {
-                        System.out.printf("Edit distance (%s, %s) <= %d\n", word1, word2, threshold);
-                        context.write(new Text(word2), new Text(word1));
-                    }
+                for (String word : current) {
+                    Set<String> nearest = nextInEditDistance(word, t - 1);
+                    nearestNeighbours.addAll(nearest);
+                }
+            }
+
+            for (String neighbour : nearestNeighbours) {
+                if (neighbour.length() == wordLength) {
+                    context.write(new Text(neighbour), new Text("\t2" + originalWord));
                 }
             }
         }
@@ -47,164 +55,107 @@ public class EditDistanceV3 {
 
         protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 
-            Set<String> seen = new TreeSet<String>();
-            String s = key.toString();
+            Set<String> nearestNeighborsInTable2 = new HashSet<String>();
+            boolean foundInTable1 = false;
 
-            for (Text value : values) {
+            for (Text v : values) {
 
-                String next = value.toString();
-
-                if (seen.contains(next)) {
-                    System.out.printf("Ignoring duplicate (%s, %s)\n", s, next);
+                if (v.toString().startsWith("\t1")) {
+                    foundInTable1 = true;
                 } else {
-                    System.out.printf("Outputting (%s, %s)\n", s, next);
-                    context.write(key, value);
+                    nearestNeighborsInTable2.add(v.toString().substring(2));
+                }
+            }
 
-                    seen.add(next);
+            if (foundInTable1) {
+                for (String neighbour : nearestNeighborsInTable2) {
+                    context.write(key, new Text(neighbour));
                 }
             }
         }
     }
 
+
     public static void main(String[] args) throws Exception {
+
+        long startTime = System.currentTimeMillis();
 
         if (args.length < 5) {
             throw new IllegalArgumentException("Too few arguments given.");
         }
 
-        String table1FilePath = args[0];
-        if (args.length > 5) {
-            table1FilePath = args[5] + table1FilePath;
-        }
+        Configuration conf = new Configuration();
+
+        Job job = Job.getInstance(conf, "edit-distance job 1");
+        job.setJarByClass(EditDistanceV3.class);
+        job.setReducerClass(DistanceReducer.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(Text.class);
+
+        MultipleInputs.addInputPath(job, new Path(args[0]), TextInputFormat.class, DistanceT1Mapper.class);
+        MultipleInputs.addInputPath(job, new Path(args[1]), TextInputFormat.class, DistanceT2Mapper.class);
+
+        FileOutputFormat.setOutputPath(job, new Path(args[2]));
 
         threshold = Integer.parseInt(args[3]);
         wordLength = Integer.parseInt(args[4]);
 
 
-        // Initialise job1
-
-        Configuration conf1 = new Configuration();
-
-        Job job = Job.getInstance(conf1, "edit-distance job 1");
-        job.setJarByClass(EditDistanceV2.class);
-        job.setMapperClass(DistanceMapper.class);
-        job.setReducerClass(DistanceReducer.class);
-        job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(Text.class);
-
-        FileInputFormat.addInputPath(job, new Path(args[1]));
-        FileOutputFormat.setOutputPath(job, new Path(args[2]));
-
-
         // Start execution
 
-        System.out.printf("Reading table 1...\n");
-        long startTime = System.currentTimeMillis();
-
-        table1Words = readWords(table1FilePath);
-
-        long endTime = System.currentTimeMillis();
-        System.out.printf("Table 1 read. Found %d distinct words. Took %d milliseconds\"\n\n", table1Words.size(), endTime - startTime);
-
-        System.exit(job.waitForCompletion(true) ? 0: 1);
+        if (job.waitForCompletion(true)) {
+            System.out.printf("\n\nExecution complete... Took %d milliseconds.", System.currentTimeMillis() - startTime);
+        }
     }
 
-    private static Set<String> readWords(String tableFilePath) throws IOException {
+    /**
+     * Finds words that are in distance 1 of given word.
+     * Ignores words if there are not enough further rounds to find new words of length == wordLength.
+     * @param word
+     * @param roundsLeft
+     * @return
+     */
+    public static Set<String> nextInEditDistance(String word, int roundsLeft) {
 
-        Set<String> words = new TreeSet<String>();
+        Set<String> nearestWords = new HashSet<String>();
 
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(tableFilePath));
-        String word = null;
+        // all deletions
 
-        while ((word = bufferedReader.readLine()) != null) {
-
-            if (! words.add(word)) {
-                System.out.printf("Duplicate word %s in table1", word);
+        if (word.length() - 1 + roundsLeft >= wordLength) {
+            for (int i = 0; i < word.length(); i++) {
+                nearestWords.add(word.substring(0, i) + word.substring(i + 1, word.length()));
             }
         }
 
-        return words;
-    }
+        // all additions
 
-    public static String commaSeparatedGrams(String s) {
-
-        StringBuilder gramsBuilder = new StringBuilder();
-
-        for (int i = 0; i <= s.length() - gramLength; i ++) {
-
-            if (i != 0) {
-                gramsBuilder.append(",");
+        if (word.length() + 1 - roundsLeft <= wordLength) {
+            for (int i = 0; i < word.length(); i++) {
+                for (int j = 0; j < alphabet.length(); j++) {
+                    nearestWords.add(word.substring(0, i) + alphabet.charAt(j) + word.substring(i, word.length()));
+                }
             }
 
-            gramsBuilder.append(s.substring(i, i + gramLength));
+            for (int j = 0; j < alphabet.length(); j++) nearestWords.add(word + alphabet.charAt(j));
         }
 
-        return gramsBuilder.toString();
-    }
+        // all substitutions
 
-    public static boolean enoughOverLappingGrams(String[] g1, String[] g2) {
+        if (word.length() + roundsLeft >= wordLength || word.length() - roundsLeft <= wordLength) {
+            for (int j = 0; j < alphabet.length(); j++) nearestWords.add(alphabet.charAt(j) + word.substring(1));
 
-        int overlapping = 0;
-        int enough = wordLength + 1 - gramLength * (threshold + 1);
+            for (int i = 1; i < word.length(); i++) {
+                for (int j = 0; j < alphabet.length(); j++) {
+                    char c = alphabet.charAt(j);
 
-        for (String w1 : g1) {
-            nextWord:
-
-            for (String w2 : g2) {
-
-                if (w1.equals(w2)) {
-                    overlapping += 1;
-
-                    if (overlapping >= enough) {
-                        return true;
+                    if (word.charAt(i) != c) {
+                        nearestWords.add(word.substring(0, i) + c + word.substring(i + 1, word.length()));
                     }
-
-                    break nextWord;
                 }
             }
         }
 
-        return false;
-    }
-
-    public static int editDistance(String word1, String word2) {
-        int len1 = word1.length();
-        int len2 = word2.length();
-
-        // len1+1, len2+1, because finally return dp[len1][len2]
-        int[][] dp = new int[len1 + 1][len2 + 1];
-
-        for (int i = 0; i <= len1; i++) {
-            dp[i][0] = i;
-        }
-
-        for (int j = 0; j <= len2; j++) {
-            dp[0][j] = j;
-        }
-
-        //iterate though, and check last char
-        for (int i = 0; i < len1; i++) {
-            char c1 = word1.charAt(i);
-            for (int j = 0; j < len2; j++) {
-                char c2 = word2.charAt(j);
-
-                //if last two chars equal
-                if (c1 == c2) {
-                    //update dp value for +1 length
-                    dp[i + 1][j + 1] = dp[i][j];
-                } else {
-                    int replace = dp[i][j] + 1;
-                    int insert = dp[i][j + 1] + 1;
-                    int delete = dp[i + 1][j] + 1;
-
-                    int min = replace > insert ? insert : replace;
-                    min = delete > min ? min : delete;
-                    dp[i + 1][j + 1] = min;
-                }
-            }
-        }
-
-        return dp[len1][len2];
+        return nearestWords;
     }
 
 }
