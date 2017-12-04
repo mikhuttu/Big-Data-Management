@@ -15,8 +15,7 @@ import java.util.*;
 
 public class EditDistanceV4 {
 
-    public static int wordLength, threshold;
-    public static int gramLength = 2;
+    public static int wordLength, gramLength, threshold;
 
     public static class Distance1T1Mapper extends Mapper<Object, Text, Text, Text> {
 
@@ -119,7 +118,7 @@ public class EditDistanceV4 {
 
         long startTime = System.currentTimeMillis();
 
-        if (args.length < 5) {
+        if (args.length < 6) {
             throw new IllegalArgumentException("Too few arguments given.");
         }
 
@@ -159,7 +158,8 @@ public class EditDistanceV4 {
 
 
         threshold = Integer.parseInt(args[3]);
-        wordLength = Integer.parseInt(args[4]);
+        gramLength = Integer.parseInt(args[4]);
+        wordLength = Integer.parseInt(args[5]);
 
 
         // Start execution
