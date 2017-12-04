@@ -17,6 +17,7 @@ public class EditDistanceV4 {
 
     public static int wordLength, gramLength, threshold;
 
+
     public static class Distance1T1Mapper extends Mapper<Object, Text, Text, Text> {
 
         protected void map(Object key, Text value, Context context) throws IOException, InterruptedException {
@@ -65,6 +66,7 @@ public class EditDistanceV4 {
                 for (String word2 : t2Words) {
 
                     if (editDistance(word1, word2) <= threshold) {
+                        System.out.printf("Writing pair (%s, %s) from reducer\n", word1, word2);
                         context.write(NullWritable.get(), new Text(word1 + "," + word2));
                     }
                 }
@@ -165,10 +167,10 @@ public class EditDistanceV4 {
         // Start execution
 
         if (job1.waitForCompletion(true)) {
-            System.out.printf("\n\nJob 1 execution complete... Took %d milliseconds.", System.currentTimeMillis() - startTime);
+            System.out.printf("\n\nJob 1 execution complete... Took %d milliseconds.\n", System.currentTimeMillis() - startTime);
 
             if (job2.waitForCompletion(true)) {
-                System.out.printf("\n\nJob 2 execution complete... Total running time %d milliseconds.", System.currentTimeMillis() - startTime);
+                System.out.printf("\n\nJob 2 execution complete... Total running time %d milliseconds.\n", System.currentTimeMillis() - startTime);
             }
         }
     }
@@ -291,6 +293,5 @@ public class EditDistanceV4 {
 
         return dp[len1][len2];
     }
-
 
 }
