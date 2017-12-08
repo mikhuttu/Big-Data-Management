@@ -1,0 +1,8 @@
+<!ELEMENT Customers (person*)>
+	<!ELEMENT person (name, age?, gender?, hobby*)>
+		<!ELEMENT name (first_name, last_name)
+			<!ELEMENT first_name (#PCDATA)>
+			<!ELEMENT last_name (#PCDATA)>
+		<!ELEMENT age (#PCDATA)>
+		<!ELEMENT gender (#PCDATA)>
+		<!ELEMENT hobby (#PCDATA)>
