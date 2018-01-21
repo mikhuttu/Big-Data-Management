@@ -1,0 +1,11 @@
+1. Choose topic
+2. Read 5 papers on the topic
+3. Present the topic (30 min)
+4. Write a report on topic (>= 8 pages)
+
+
+Aihevaihtoehdot:
+
+- Data sampling (matemaattinen) --> skip
+
+- Jokaista aihetta kohti löytyy 3 valmista aihetta. Etsi omatoimisesti kaksi muuta.
