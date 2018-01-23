@@ -1,0 +1,9 @@
+Yleistä presentaatioon liittyen (videopätkä: https://www.youtube.com/watch?v=gF3FWu56dc8)
+
+- 1 min sääntö (minuutti / slide)
+- graafit omille diolleen (ei tarvitse selittää "As you can see from graph A/B/C...")
+- "master slide" (määrittää fonttikoot ja tyylit kaikkiin slideihin ym.)
+
+- questions
+  - don't waffle (= say yes/no if the audience asks "Do you think it's a good idea if...?")
+  - backup slidet (joihinkin yleisiin kysymyksiin lisäslidet)
