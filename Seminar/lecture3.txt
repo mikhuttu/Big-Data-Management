@@ -1,0 +1,26 @@
+- Kirjoita vaikka selkeää ideaa ei olisikaan. Ideat kehittyvät kirjoittaessa.
+
+- Pää(idea)(t) pitää olla sellainen, että se saa lukijan mukaansa (kuten virus joka injektoituu eteenpäin)
+
+- Raportista pitää olla helppo löytää sen pääidea. Kirjoita siten, että "raportin pääidea on xyz"
+
+
+a) Here is a problem
+b) Why problem is interesting
+c) The probled is unsolved
+d) Own idea to solve the problem
+
+- Raportin johdannon alun tulee olla lyhyt ja mielenkiintoinen. Sillä joka tapauksessa eniten lukijoita:
+  1) Selitä ongelma
+  2) Selitä omat kontribuutiot lyhyesti ("näytämme nyt ratkaisun em. ja mahd. muihin samantyyppisiin ongelmiin")
+
+- Not "section 2 tells about, section 3 is about etc."
+
+- Ongelman ratkaisun selittäminen:
+  1) Esitä intuitio ja esimerkkejä oman idean pohjalta. Miten oma idea ratkaisee ongelman?
+  2) Näiden jälkeen voi esittää matemaattisemmin, miksi ratkaisu oikeasti toimii.
+
+
+  - Aiheen valinta: valitse vaikka 1 Data Cleansing paperi, joka annettu valmiiksi ja yritä löytää 4 hyvin samankaltaista paperia. Ei siis sattumanvaraisia ko. alalta.
+
+  - Raportin tulee olla valmis jo 12.3. Tuon jälkeen ei pitäisi olla tarve tehdä muuta kuin korjauksia muiden antamien palautteiden perusteella.

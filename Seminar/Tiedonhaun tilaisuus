@@ -1,0 +1,34 @@
+Tiedonhaun tilaisuus
+
+Yliopiston verkkokirjat:	https://www.terkko.helsinki.fi/booknavigator/
+Research guides:			http://libraryguides.helsinki.fi/cs
+
+Tietokantoja:
+-ACM
+-IEE Xplore
+-Scopus
+-Google Scholar (sisältää hyvä- sekä huonotasoista aineistoa)
+
+
+www.zotero.org				mikhuttu	k...		Zoteroon käytössä Firefox -plugin
+
+Viitteiden hallinta:
+-RefWorks, Zotero tai Mendeley käyttöön ja niiden avulla on mahdollista importata .bib -tiedosto lähteiden perusteella, jonka sisällön vain copy pastaa references-fi.bib:iin.
+--> RefWorks ihan hyvä. Noiden sijaan voi tosin ihan hyvin copy pastaa kaikki bib-viitteiden sisällöt references-fi.bib:iin ja viitata sieltä LaTeXilla suoraan.
+
+
+ACM Computing Classification System:	http://dl.acm.org/ccs/ccs.cfm?CFID=579610197&CFTOKEN=74803760
+-Tätä kautta voi määritellä luokituksen tutkielmaan (booknavigator seuraa näitä luokkia myös)
+
+
+Viittaustyylit:
+-Selvitä mikä viittaustyyli tulee kandiin. 1) Numeroitu, 2) tyyliin [KCM05] vai 3) joku muu? Todennäköisesti numeroitu IEEE viittaustyyli.
+-Jos autogeneroi viitteet johonkin muuhun kuin aakkosjärjestykseen, tulee ne korjata tähän muotoon.
+
+Review artikkeleja hyödyllistä katsoa läpi, sillä ne sisältävät viittauksia moniin hyödyllisiin artkkeleihin, jotka liittyvät aiheeseen ja sitä kautta löytää artikkeleita mitä on myös hyvä lukea.
+
+Julkaisukanavahaku: http://www.tsv.fi/julkaisufoorumi/haku.php
+-Hae täältä lähteitä, jotka korkeatasoisia (2 ja 3). Tässä järjestelmässä tosin se ongelma, että uusia artikkeleita ja konferensseja ei tänne tule kovinkaan nopeasti, vaan
+yleisesti uusilla artikkeleilla vaikka olisivatkin korkeatasoisia, saavat tason 1 ensin tai niitä ei löydy täältä ollenkaan (uudet jutut tulevat hitaasti tänne näkyviin).
+
+SJR palvelun kautta pystyy mm. vertailemaan lehtiä, ja millä todennäköisyydellä lehtiin viitataan.
