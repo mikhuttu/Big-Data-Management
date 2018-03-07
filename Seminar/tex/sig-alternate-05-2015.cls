@@ -1632,7 +1632,7 @@
 % ISBN
 
 \def\isbn#1{\global\acmcopyr={#1}}
-\isbn{978-1-4503-2138-9}
+\isbn{} % 978-1-4503-2138-9}
 
 \RequirePackage{url}
 \urlstyle{rm}

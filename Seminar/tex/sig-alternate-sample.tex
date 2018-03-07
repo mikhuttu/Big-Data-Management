@@ -170,6 +170,103 @@ This section discusses background related to data cleansing.
 It introduces a general process for data cleansing containing
 data analysis and data transformation steps.
 
+It also introduces specific data quality related problems and
+different kinds of methods and frameworks for handling them.
+
+\textit{Quantitative Data Cleaning for Large Databases}
+
+- Quanttitative data (outlier detection)
+- Categorical data (same thing mentioned with a different name, misspellings)
+
+
+\textit{An Efficient Data Cleaning Algorithm Based on Attributes Selection}
+
+- SNM & MPN algorithms for duplicate records detection
+- Improved algorithm for duplicate error detection
+- O(n log n)
+- not suitable for big data?
+
+
+\textit{Qualitative Data Cleaning}
+
+- What kind of errors, how and where to detect them
+- Data repairing
+-- Trusting integrity constraints / rules, data or both?
+-- Automatic / human guided (training ML model, suggesting fixes etc.)
+-- Repairing on place / generating a model for repairing
+
+From the actual paper / book:
+
+- "Minimal cost for repair"
+
+
+3.1 - WHAT TO REPAIR
+
+- Trusting integrity constraints
+-- NADEEF is a holistic repairing algorithm based on user-defined rules (p. 337)
+
+- Trusting data
+-- No examples necessary to be given rather than mentioning this kind of rules cleansing approach
+
+- Trusting (= "changing") both data and constraints:
+
+
+3.2 - HOW TO REPAIR
+
+3.2.1 - Automatic Repairing
+
+- Cardinality- / Cost-minimal repair
+-- Algorithm 8 for automatic repair procedure
+- Unverified fixes, may introduce new errors during the process
+
+
+3.2.2 - Human guided repair
+
+- Guided Data Repair uses ML classifier
+- KATARA
+- Data Tamer (very tied to ML)
+
+
+3.3 - WHERE TO REPAIR
+
+One-shot cleaning
+
+- "Most of the proposed data repairing techniques
+(\textit{all discussed so far}) identify errors in the data, and find a unique fix
+of the data either by minimally modifying the data according to a cost
+function or by using human guidance (Figure 3.17(a))."
+
+Probabilistic Cleaning
+- Probabilistic deduplication (probability based duplication "removal")
+
+
+4. BIG DATA CLEANING
+- Pyrkimys vähentää tarvittavaa ihmiskommunikaatiota
+- Mahd. vain datan pienen osajoukon käsittely ja tämän perusteella todennäköisyyksiin perustuvia vastauksia / jatkokäsittelyä
+
+- Deduplicating
+-- Blocking, windowing, canopy clustering
+
+- Sampling (SampleClean)
+
+- Incremental data cleaning
+-- Entity resolution (ER) algorithm
+
+- Distributed data cleaning
+-- MapReduce, Spark, Dedoop (with ER)
+-- BigDansing (runs on top of a data processing platform like DBMS or MapReduce)
+
+- Problems with data partitioned across multiple sites (p. 379)
+-- Objective to minimize data shipment cost
+
+
+5. CONCLUSION
+
+- "Scalability. Large volumes of data render most current techniques unusable in real settings. "
+
+
+
+
 \subsection{Type Changes and {\subsecit Special} Characters}
 We have already seen several typeface changes in this sample.  You
 can indicate italicized words or phrases in your text with
