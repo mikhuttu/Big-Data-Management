@@ -49,14 +49,14 @@
 
 \begin{document}
 
-\title{Survey on Big Data Cleansing}
+\title{Big data cleansing based on qualitative attributes}
 
 \numberofauthors{1}
 
 \author{
 \alignauthor
 	Mika Huttunen\\
-       		\affaddr{Faculty of science, Helsinki university}
+       		\affaddr{Helsinki University}
 }
 
 \date{11 March 2018}
@@ -108,60 +108,46 @@ compiled under \LaTeX$2_\epsilon$\ and BibTeX.
 % 1. INTRODUCTION
 \section{Introduction}
 
-The \textit{proceedings} are the records of a conference.
-ACM seeks to give these conference by-products a uniform,
-high-quality appearance.  To do this, ACM has some rigid
-requirements for the format of the proceedings documents: there
-is a specified format (balanced  double columns), a specified
-set of fonts (Arial or Helvetica and Times Roman) in
-certain specified sizes (for instance, 9 point for body copy),
-a specified live area (18 $\times$ 23.5 cm [7" $\times$ 9.25"]) centered on
-the page, specified size of margins (1.9 cm [0.75"]) top, (2.54 cm [1"]) bottom
-and (1.9 cm [.75"]) left and right; specified column width
-(8.45 cm [3.33"]) and gutter size (.83 cm [.33"]).
+Nowadays companies are gathering large amounts of data, and its becoming easier to use data to help their businesses in all kinds of
+decision making, analytics, or for example automating human-involved tasks.
+Data can be collected in different ways like via user input and, all kinds of sensors.
+Humans often make data input errors via misspelling, and sensors may grab unwanted noise along the data they're designed to catch.
+Not to mention that today, the variety of data is also large which leads into collecting data of different formats together.
+Using \textit{dirty}, or invalid data can lead into making incorrect decisions. These can sometimes cause serious issues -
+especially in health care and financing sides \cite{Ilyas2015}.
 
-The good news is, with only a handful of manual
-settings\footnote{Two of these, the {\texttt{\char'134 numberofauthors}}
-and {\texttt{\char'134 alignauthor}} commands, you have
-already used; another, {\texttt{\char'134 balancecolumns}}, will
-be used in your very last run of \LaTeX\ to ensure
-balanced column heights on the last page.}, the \LaTeX\ document
-class file handles all of this for you.
+\textit{Data cleansing} is the solution to the above-mentioned problem. It's a process that contains steps for \textit{detecting} possible
+\textit{errors} in data, and generating data \textit{transformations} to repair them. Data cleansing can be done either based on
+\textit{qualitative} or \textit{quantitative} techniques.
 
-The remainder of this document is concerned with showing, in
-the context of an ``actual'' document, the \LaTeX\ commands
-specifically available for denoting the structure of a
-proceedings paper, rather than with giving rigorous descriptions
-or explanations of such commands.
+Quantitative techniques focus on error detection and correction based on numerical attributes of data \cite{Hellerstein2008}.
+If for example some data is visualised in two-dimensional space, it's fairly easy to detect \textit{outliers}, and thus possible errors in the data.
+Outlier detection is an example of quantitative data \textit{analysis}. My seminar report focuses on the latter, qualitative techniques of data cleansing, and their scalability to big data.
 
+Qualitative techniques are used to detect and correct data errors based on \textit{integrity constraints}, or \textit{patterns} in the data \cite{Ilyas2015}. In a database, an example of an integrity constraint could be such that each person should have unique social security number. A pattern on the other hand could be such that for each person, their ZIP code would define the city they live in. If we have several people with ZIP code being $00100$, and city as Helsinki, and yet another person with same ZIP code, but city being Turku, the latter mentioned person should be considered erroneous.
 
-% 2. RELATED WORK
-\section{Related work}
+% TODO:
+% Kirjoita alle eri frameworkeist‰ big datan k‰sittelyyn, ja miksi ovat hyˆdyllisi‰.
 
-Typically, the body of a paper is organized
-into a hierarchical structure, with numbered or unnumbered
-headings for sections, subsections, sub-subsections, and even
-smaller sections.  The command \texttt{{\char'134}section} that
-precedes this paragraph is part of such a
-hierarchy.\footnote{This is the second footnote.  It
-starts a series of three footnotes that add nothing
-informational, but just give an idea of how footnotes work
-and look. It is a wordy one, just so you see
-how a longish one plays out.} \LaTeX\ handles the numbering
-and placement of these headings for you, when you use
-the appropriate heading commands around the titles
-of the headings.  If you want a sub-subsection or
-smaller part to be unnumbered in your output, simply append an
-asterisk to the command name.  Examples of both
-numbered and unnumbered headings will appear throughout the
-balance of this sample document.
+The rest of the report is will be divided as follows. In section 2, I will summarise, where we are with big data cleansing at the moment.
+I'll introduce several big data cleansing techniques in more detail. The techniques can practically be divided into \textit{de-duplication} methods, \textit{sampling}, \textit{incremental cleansing}, and \textit{distributed cleansing}.
+I'll also discuss what kinds of problems are yet to be solved. % skaalautuvuus --> oletuksia, dataa usealla 'saitilla', holistic vs. non-holistic cleansing, ... ?
 
-Because the entire article is contained in
-the \textbf{document} environment, you can indicate the
-start of a new paragraph with a blank line in your
-input file; that is why this sentence forms a separate paragraph.
+In section 3, I will go through actual implementations for big data cleansing techniques. % BigDansing, KATARA(?), ML frameworks, ... ?
+% TODO: write more here
+Section 4 discusses weak points in the papers, and in section 5, I show my own ideas to the research problem. Finally section 6 summarises the whole report. 
 
 
+
+% 2. LITERATURE REVIEW
+\section{Literature review}
+
+- M‰‰rittele ensin dirty / low quality data\\
+- Seuraavaksi hyv‰ selitt‰‰, mist‰ qualitative data analysisiss‰ ja sen eri tekniikoista on kyse
+
+
+
+% Yhdist‰ seuraava osaksi INTRODUCTION / LITERATURE REVIEW osiota
 
 % 3. BACKGROUND
 \section{General data cleansing process}
@@ -181,7 +167,7 @@ different kinds of methods and frameworks for handling them.
 
 \textit{An Efficient Data Cleaning Algorithm Based on Attributes Selection}
 
-- SNM & MPN algorithms for duplicate records detection
+- SNM \& MPN algorithms for duplicate records detection
 - Improved algorithm for duplicate error detection
 - O(n log n)
 - not suitable for big data?

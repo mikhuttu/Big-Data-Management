@@ -1,3 +1,12 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{Hellerstein2008}
+J.~M. Hellerstein.
+\newblock Quantitative data cleaning for large databases, 2008.
+
+\bibitem{Ilyas2015}
+I.~F. Ilyas and X.~Chu.
+\newblock Trends in cleaning relational data: Consistency and deduplication.
+\newblock {\em Found. Trends databases}, 5(4):281--393, Oct. 2015.
 
 \end{thebibliography}

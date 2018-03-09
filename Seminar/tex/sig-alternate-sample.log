@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=latex 2015.11.25)  7 MAR 2018 11:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=latex 2015.11.25)  9 MAR 2018 13:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -253,57 +253,50 @@ Overfull \hbox (1.0793pt too wide) in paragraph at lines 68--77
 []$ \T1/aer/m/it/9 and BibT[]X\T1/aer/m/n/9 .
  []
 
-LaTeX Font Info:    Try loading font information for T1+aett on input line 128.
 
-(/usr/local/texlive/2015/texmf-dist/tex/latex/ae/t1aett.fd
-File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
-)
-Underfull \hbox (badness 1360) in paragraph at lines 128--128
-[][]\T1/aer/m/n/9 Two of these, the \T1/aett/m/n/9 \num-bero-fau-thors \T1/aer/
-m/n/9 and \T1/aett/m/n/9 \alig-nau-
- []
-
-
-Overfull \hbox (4.85626pt too wide) in paragraph at lines 167--167
+Overfull \hbox (4.85626pt too wide) in paragraph at lines 154--154
 []\secfnt GENERAL DATA CLEANS-ING PRO-CESS 
- []
-
-
-Overfull \hbox (5.08302pt too wide) in paragraph at lines 184--186
-[]\T1/aer/m/n/9 This sec-tion dis-cusses prob-lems that arise when data cleans-
-
- []
-
-
-Overfull \hbox (2.42024pt too wide) in paragraph at lines 190--190
-[]\secfnt BIG DATA CLEANS-ING FRAME-WORKS 
  []
 
 [1
 
 
-] (./sig-alternate-sample.bbl)
+]
+LaTeX Font Info:    Try loading font information for T1+aett on input line 260.
+
+ (/usr/local/texlive/2015/texmf-dist/tex/latex/ae/t1aett.fd
+File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
+)
+Overfull \hbox (5.08302pt too wide) in paragraph at lines 268--270
+[]\T1/aer/m/n/9 This sec-tion dis-cusses prob-lems that arise when data cleans-
+
+ []
+
+
+Overfull \hbox (2.42024pt too wide) in paragraph at lines 274--274
+[]\secfnt BIG DATA CLEANS-ING FRAME-WORKS 
+ []
+
+(./sig-alternate-sample.bbl)
 File: flies.eps Graphic file (type eps)
  <flies.eps>
 File: rosette.eps Graphic file (type eps)
  <rosette.eps>
 
 LaTeX Font Warning: Font shape `T1/aett/bx/n' undefined
-(Font)              using `T1/aett/m/n' instead on input line 295.
+(Font)              using `T1/aett/m/n' instead on input line 379.
 
 \c@theorem=\count110
 \c@definition=\count111
-
-Overfull \hbox (15.60826pt too wide) detected at line 325
+[2]
+Overfull \hbox (15.60826pt too wide) detected at line 409
 \OML/cmm/m/it/9 l \OT1/cmr/m/n/9 = [] \OML/cmm/m/it/9 f\OT1/cmr/m/n/9 (\OML/cmm
 /m/it/9 x\OT1/cmr/m/n/9 ) = [] [] = [] \OML/cmm/m/it/9 g\OT1/cmr/m/n/9 (\OML/cm
 m/m/it/9 x\OT1/cmr/m/n/9 ) \OMS/cmsy/m/n/9 ^^A [] [] \OT1/cmr/m/n/9 = 0 \OMS/cm
 sy/m/n/9 ^^A \OML/cmm/m/it/9 L \OT1/cmr/m/n/9 = 0\OML/cmm/m/it/9 ;
  []
 
-[2
-
-] [3
+[3
 
 ] (./sig-alternate-sample.aux)
 
@@ -311,12 +304,12 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 2256 strings out of 493090
- 26855 string characters out of 6134867
- 100340 words of memory out of 5000000
- 5697 multiletter control sequences out of 15000+600000
+ 2258 strings out of 493090
+ 26883 string characters out of 6134867
+ 99340 words of memory out of 5000000
+ 5699 multiletter control sequences out of 15000+600000
  46730 words of font info for 56 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,10n,34p,234b,314s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 39i,10n,34p,825b,312s stack positions out of 5000i,500n,10000p,200000b,80000s
 
-Output written on sig-alternate-sample.dvi (3 pages, 12408 bytes).
+Output written on sig-alternate-sample.dvi (3 pages, 17068 bytes).
