@@ -145,19 +145,13 @@ Section 4 discusses weak points in the papers, and in section 5, I show my own i
 - Määrittele ensin dirty / low quality data\\
 - Seuraavaksi hyvä selittää, mistä qualitative data analysisissä ja sen eri tekniikoista on kyse
 
+% 2015: TRENDS ja muiden artikkelien läpikäynti. Osan asioista voi jättää big datalle tarkoitettuun osioon.
+% Selkeä aikajatkumo lähivuosien tapahtumista (ICs, frameworkejä näiden päälle, skaalautuminen big datan käsittelyyn (mm. BigDansing), tarkempaa tutkimusta työkalujen tarkkuudesta virheiden korjaukseen (2016: "Where are we now?"), työkalujen yhdistämistä tarkkuutta parantamalla, 2017: "HoloClean"
+% 2017: CleanM (miten suhtautuu jatkumoon), 2017: CLAMS (menee jonkin verran asian ohi). Pitäisikö vain mainita, mutta ei mennä kovin tarkasti tämän ongelman ratkaisuun? Johtopäätösten yheydessä voi mainita ongelmasta unstructured datan käsittelyyn liittyen (samoin kuin se, että dataa usealla saitilla jota puhdistaa).
 
 
-% Yhdistä seuraava osaksi INTRODUCTION / LITERATURE REVIEW osiota
 
-% 3. BACKGROUND
-\section{General data cleansing process}
-
-This section discusses background related to data cleansing.
-It introduces a general process for data cleansing containing
-data analysis and data transformation steps.
-
-It also introduces specific data quality related problems and
-different kinds of methods and frameworks for handling them.
+\section{Articles}
 
 \textit{Quantitative Data Cleaning for Large Databases}
 
@@ -181,52 +175,133 @@ different kinds of methods and frameworks for handling them.
 -- Automatic / human guided (training ML model, suggesting fixes etc.)
 -- Repairing on place / generating a model for repairing
 
-From the actual paper / book:
+\section{2015: TRENDS}
 
-- "Minimal cost for repair"
+- Data deduplication can be seen as enforcing a key constraint defined on all the attributes of
+a relational schema, since two duplicate tuples can be seen as a violation
+of the key constraint.
+
+\subsection{Error detection}
+
+- A violation with respect to an IC is defined as the minimal subset
+of database cells, such that at least one of the cells has to be modified
+to satisfy the IC, where a cell is an attribute value of a tuple.
+
+- Given a relational database instance I of schema R
+and a set of integrity constraints ?, we need to find another database
+instance I' with no violations with respect to ?.
+
+- Given a dirty database instance, the first step toward cleaning the
+database is to detect and surface anomalies or errors.
+
+- Automation (How to Detect?): We classify proposed approaches
+according to whether and how humans are involved in the
+anomaly detection process. Most techniques are fully automatic,
+for example, detecting violations of functional dependencies,
+while other techniques involve humans, for example, to identify
+duplicate records.
+
+- Let ? denote a set of integrity constraints (ICs). We use I |= ?
+to indicate that database Instance I conforms with the set of integrity
+constraints ?. We say that I' is a repair of I with respect to ? if
+I'  |=  ?, and CIDs(I) = CIDs(I') (i.e., no deletions or insertions are allowed to clean a database instance).
+
+- Constraints (refer to p. 289 - 301)
+-- FD, CFD, DC (subsumes the former so explaining them not useful?)
+
+- Duplicate record detection
+-- Similarity graph based on some similarity metric
+-- Clustering enough similar records together (A <--> B and B <--> C    ---->  A <--> C)
+--- In other words, finding connected components in the similarity graph
+-- Merging the records into a single records (based on their attributes)
 
 
-3.1 - WHAT TO REPAIR
+Holistic data cleaning (p. 318):
+- Automatically detects violations based on multiple ICs
 
-- Trusting integrity constraints
--- NADEEF is a holistic repairing algorithm based on user-defined rules (p. 337)
-
-- Trusting data
--- No examples necessary to be given rather than mentioning this kind of rules cleansing approach
-
-- Trusting (= "changing") both data and constraints:
+Where to detect (p. 322)
+- Problematic that data errors are often found in business layers
 
 
-3.2 - HOW TO REPAIR
+\subsection{Error reparing}
 
-3.2.1 - Automatic Repairing
+- Repair target (What to repair?)
+-- Repairing algorithms make different
+assumptions about the data and the quality rules: (1) trusting
+the declared integrity constraints, and hence, only data can
+be updated to remove errors; (2) trusting the data completely
+and allowing the relaxation of the constraints, for example, to
+address schema evolution and obsolete business rules; and finally
+(3) exploring the possibility of changing both the data and the constraints.
 
-- Cardinality- / Cost-minimal repair
--- Algorithm 8 for automatic repair procedure
-- Unverified fixes, may introduce new errors during the process
+- -Holistic repairing (p. 336 - 342)
+--- We describe these techniques as 'One at a time techniques'. Most available data repairing solutions are in this category.
+They address one type of error, either to allow for theoretical quality guarantees, or to allow for a scalable system.
+
+--- Multiple data quality problems, such as missing values, typos, the presence
+of duplicate records, and business rule violations, are often observed
+in a single data set. These heterogeneous types of errors interplay
+and conflict on the same dataset, and treating them independently
+would miss the opportunity to correctly identify the actual errors in the
+data. We call the proposals that take a more holistic view of the data
+cleaning process Holistic cleaning approaches. 
+
+-- Mention also rules-only repairing, and both data and rules repairing (p. 345 - 350)
+--- Continuous data cleansing
 
 
-3.2.2 - Human guided repair
+- Automation (How to repair?)
+-- Fully automatic (trying to minimize cost between moving from I to I') vs. human involvement (verify / suggest fixes, train ML model)
 
-- Guided Data Repair uses ML classifier
-- KATARA
-- Data Tamer (very tied to ML)
+-- Fully automatic: cardinality-minimal and cost-minimal repairs (p. 351)
+--- - Unverified fixes, may introduce new errors during the process
+
+-- Automatic data repairing techniques use heuristics, such as minimal
+repairs to automatically repair the data in situ, and they often generate
+unverified fixes. Worse still, they may even introduce new errors during
+the process. It is often difficult, if not impossible, to guarantee the
+accuracy of any data repairing techniques without external verification
+via experts and trustworthy data sources. (p. 357)
+
+-- Example 3.10. Consider two tuples t1 and t8 in Table 1.1; they both
+have the same values ?25813? for ZIP attribute, but t1 has ?WA?
+for ST attribute and t8 has ?WV? for ST attribute. Clearly, at least
+one of the four cells t1[ZIP], t8[ZIP], t1[ST], t8[ST] has to be incorrect.
+Lacking other evidence, existing automatic repairing techniques [17, 26]
+often randomly choose one of the four cells to update. Some of them [17]
+even limit the allowed changes to be t1[ST], t8[ST], since it is unclear
+which values t1[ZIP], t8[ZIP] should take if they are to be changed. (p. 357)
+
+-- Guided data repair
+-- KATARA (scale-out?)
+-- Data Tamer (scale-out?)
 
 
-3.3 - WHERE TO REPAIR
+- Repair model (Where to repair?)
+-- Repair database instance in place vs. generate a model for repairing the instance
 
-One-shot cleaning
-
-- "Most of the proposed data repairing techniques
-(\textit{all discussed so far}) identify errors in the data, and find a unique fix
+-- Most of the proposed data repairing techniques 
+(all discussed so far) identify errors in the data, and find a unique fix
 of the data either by minimally modifying the data according to a cost
-function or by using human guidance (Figure 3.17(a))."
+function or by using human guidance (Figure 3.17(a)). (p. 366)
 
-Probabilistic Cleaning
-- Probabilistic deduplication (probability based duplication "removal")
+-- As follows, we describe a different model-based approach for nondestructive
+data cleaning. Data repairing techniques in this category do
+not produce a single repair for a database instance; instead, they produce
+a space of possible repairs (Figure 3.17(b)). The space of possible
+repairs is used either to answer queries against the dirty data probabilistically
+(e.g., using possible worlds semantics) [12], or to sample
+from the space of all possible clean instances of the database [9, 11].
+
+-- Probabilistic Cleaning
+--- Probabilistic deduplication (probability based duplication "removal")
+
+-- Sampling the Space of Possible Repairs
+--- Relates closely to SampleClean for big data cleansing
 
 
-4. BIG DATA CLEANING
+
+BIG DATA CLEANING
 - Pyrkimys vähentää tarvittavaa ihmiskommunikaatiota
 - Mahd. vain datan pienen osajoukon käsittely ja tämän perusteella todennäköisyyksiin perustuvia vastauksia / jatkokäsittelyä
 
@@ -239,42 +314,49 @@ Probabilistic Cleaning
 -- Entity resolution (ER) algorithm
 
 - Distributed data cleaning
--- MapReduce, Spark, Dedoop (with ER)
+-- MapReduce, Spark, Dedoop (with ER) / Dis-Dedup, 
 -- BigDansing (runs on top of a data processing platform like DBMS or MapReduce)
+-- HoloClean?
+-- CleanM ?
 
 - Problems with data partitioned across multiple sites (p. 379)
 -- Objective to minimize data shipment cost
 
 
-5. CONCLUSION
+
+%This section discusses background related to data cleansing.
+%It introduces a general process for data cleansing containing
+%data analysis and data transformation steps.
+
+%It also introduces specific data quality related problems and
+%different kinds of methods and frameworks for handling them.
+
+
+% 5. BIG DATA CLEANSING
+\section{Big data cleansing}
+
+This section discusses problems that arise when handling big data.
 
 - "Scalability. Large volumes of data render most current techniques unusable in real settings. "
 
+This section also discusses recent frameworks designed particularly for handing big data.
+
+I did further investigation with BigDansing, SampleClean, HoloClean, Dis-Dedup, and CleanM frameworks.
+Ihab F. Ilyas has been part of research team of BigDansing, HoloClean and Dis-Dedup joined by
+Xu Chu (with the exception of not being part of BigDansing research team) et al. and thus
+I picked also CleanM for further investigation not to only have content from the same researchers.
+Ilyas and Chu's have nevertheless conducted lots of essential research especially related to qualitative data cleansing.
+
+TODO: I also discuss CLAMS which is not actually a big data cleansing framework, but rather one
+for managing data quality via ICs with limited schema information (?).
 
 
+BigDansing is a framework that can be run for example on top of
+MapReduce to distribute error detection work.
 
-\subsection{Type Changes and {\subsecit Special} Characters}
-We have already seen several typeface changes in this sample.  You
-can indicate italicized words or phrases in your text with
-the command \texttt{{\char'134}textit}.
+HoloClean is 
 
-
-
-% 4. ISSUES WITH BIG DATA
-
-\section{Issues with big data}
-
-This section discusses problems that arise when
-data cleansing is done with big data.
-
-
-
-% 5. BIG DATA CLEANSING FRAMEWORKS
-\section{Big data cleansing frameworks}
-
-This section discusses tools and frameworks designed
-particularly for handing big data. There are BigDansing and
-KATARA, but what else is available?
+Dis-Dedup is a framework for detecting duplicate data records. % improved version of DeDoop
 
 
 
@@ -304,16 +386,6 @@ tools available...
 
 Summarize the research problem and the main contributions of previous papers. The main weakness of
 previous works could be also mentioned here. Some future works can be described as well.
-
-This paragraph will end the body of this sample document.
-Remember that you might still have Acknowledgments or
-Appendices; brief samples of these
-follow.  There is still the Bibliography to deal with; and
-we will make a disclaimer about that here: with the exception
-of the reference to the \LaTeX\ book, the citations in
-this paper are to articles which have nothing to
-do with the present subject and are used as
-examples only.
 
 
 
