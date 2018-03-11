@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.25)  11 MAR 2018 20:59
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.25)  11 MAR 2018 21:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -320,13 +320,13 @@ File: figures/rahm1.png Graphic file (type png)
 Package pdftex.def Info: figures/rahm1.png used on input line 112.
 (pdftex.def)             Requested size: 177.46321pt x 87.5271pt.
 
-Overfull \hbox (6.33643pt too wide) in paragraph at lines 121--122
+Overfull \hbox (6.33643pt too wide) in paragraph at lines 122--123
 \T1/aer/m/n/9 defines a con-straint be-tween data at-tributes $\OML/cmm/m/it/9 
 ZIP$ \T1/aer/m/n/9 and $\OML/cmm/m/it/9 STATE$
  []
 
 
-Overfull \hbox (2.92982pt too wide) in paragraph at lines 125--126
+Overfull \hbox (2.92982pt too wide) in paragraph at lines 126--127
 \T1/aer/m/n/9 func-tional de-pen-den-cies), and \T1/aer/m/it/9 DCs \T1/aer/m/n/
 9 (de-nial con-straints). Ilays
  []
@@ -335,26 +335,26 @@ Overfull \hbox (2.92982pt too wide) in paragraph at lines 125--126
 
 
  <./figures/rahm1.png>]
-Overfull \hbox (4.28949pt too wide) in paragraph at lines 127--128
+Overfull \hbox (4.28949pt too wide) in paragraph at lines 128--129
 \T1/aer/m/n/9 fixed ei-ther via to-tally au-to-matic, or (par-tially) hu-man gu
 ided
  []
 
 
 LaTeX Warning: Reference `Abedjan2016' on page \thepage  undefined on input lin
-e 154.
+e 155.
 
 
 LaTeX Warning: Reference `Rekatsinas2017' on page \thepage  undefined on input 
-line 156.
+line 157.
 
 
 LaTeX Warning: Reference `Chu2013' on page \thepage  undefined on input line 15
-8.
+9.
 
 
 LaTeX Warning: Reference `Abedjan2016' on page \thepage  undefined on input lin
-e 158.
+e 159.
 
 (./sig-alternate-sample.bbl) [2] (./sig-alternate-sample.aux)
 
@@ -379,7 +379,7 @@ ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/
 dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2015/texmf-dist/fo
 nts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/
 urw/times/utmr8a.pfb>
-Output written on sig-alternate-sample.pdf (2 pages, 111889 bytes).
+Output written on sig-alternate-sample.pdf (2 pages, 111894 bytes).
 PDF statistics:
  51 PDF objects out of 1000 (max. 8388607)
  35 compressed objects within 1 object stream
