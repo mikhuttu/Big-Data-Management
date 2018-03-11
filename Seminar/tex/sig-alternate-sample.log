@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.25)  11 MAR 2018 12:37
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.25)  11 MAR 2018 16:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -329,38 +329,27 @@ ZIP$ \T1/aer/m/n/9 and $\OML/cmm/m/it/9 STATE$
 
 
  <./figures/rahm1.png>]
-Underfull \vbox (badness 1558) has occurred while \output is active []
+Overfull \hbox (2.92982pt too wide) in paragraph at lines 125--126
+\T1/aer/m/n/9 func-tional de-pen-den-cies), and \T1/aer/m/it/9 DCs \T1/aer/m/n/
+9 (de-nial con-straints). Ilays
+ []
 
- [2]
-Overfull \hbox (12.13875pt too wide) in paragraph at lines 301--303
+<figures/chu2.png, id=18, 393.47pt x 166.6225pt>
+File: figures/chu2.png Graphic file (type png)
+ <use figures/chu2.png>
+Package pdftex.def Info: figures/chu2.png used on input line 155.
+(pdftex.def)             Requested size: 314.77641pt x 133.29817pt.
+
+[2]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Overfull \hbox (12.13875pt too wide) in paragraph at lines 328--330
 []\T1/aer/m/n/9 -- Prob-a-bilis-tic Clean-ing --- Prob-a-bilis-tic dedu-pli-ca-
 tion (prob-
  []
 
-(./sig-alternate-sample.bbl)
-LaTeX Font Info:    Try loading font information for T1+aett on input line 429.
-
-
-(/usr/local/texlive/2015/texmf-dist/tex/latex/ae/t1aett.fd
-File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
-) [3]
-Package epstopdf Info: Source file: <flies.eps>
-(epstopdf)                    date: 2015-09-14 11:46:18
-(epstopdf)                    size: 343737 bytes
-(epstopdf)             Output file: <flies-eps-converted-to.pdf>
-(epstopdf)                    date: 2018-03-11 12:32:05
-(epstopdf)                    size: 9687 bytes
-(epstopdf)             Command: <repstopdf --outfile=flies-eps-converted-to.pdf
- flies.eps>
-(epstopdf)             \includegraphics on input line 445.
-Package epstopdf Info: Output file is already uptodate.
-
-<flies-eps-converted-to.pdf, id=25, 307.1475pt x 114.4275pt>
-File: flies-eps-converted-to.pdf Graphic file (type pdf)
-
-<use flies-eps-converted-to.pdf>
-Package pdftex.def Info: flies-eps-converted-to.pdf used on input line 445.
-(pdftex.def)             Requested size: 307.14674pt x 114.42722pt.
+[3 <./figures/chu2.png>] (./sig-alternate-sample.bbl)
 Package epstopdf Info: Source file: <rosette.eps>
 (epstopdf)                    date: 2015-09-14 11:46:28
 (epstopdf)                    size: 3502 bytes
@@ -378,7 +367,12 @@ File: rosette-eps-converted-to.pdf Graphic file (type pdf)
 <use rosette-eps-converted-to.pdf>
 Package pdftex.def Info: rosette-eps-converted-to.pdf used on input line 453.
 (pdftex.def)             Requested size: 72.26622pt x 72.26622pt.
+LaTeX Font Info:    Try loading font information for T1+aett on input line 455.
 
+
+(/usr/local/texlive/2015/texmf-dist/tex/latex/ae/t1aett.fd
+File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
+)
 
 LaTeX Font Warning: Font shape `T1/aett/bx/n' undefined
 (Font)              using `T1/aett/m/n' instead on input line 455.
@@ -393,24 +387,19 @@ m/m/it/9 x\OT1/cmr/m/n/9 ) \OMS/cmsy/m/n/9 ^^A [] [] \OT1/cmr/m/n/9 = 0 \OMS/cm
 sy/m/n/9 ^^A \OML/cmm/m/it/9 L \OT1/cmr/m/n/9 = 0\OML/cmm/m/it/9 ;
  []
 
-[4
-
-] [5
-
- <./flies-eps-converted-to.pdf> <./rosette-eps-converted-to.pdf>]
-(./sig-alternate-sample.aux)
+[4 <./rosette-eps-converted-to.pdf>] (./sig-alternate-sample.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
  ) 
 Here is how much of TeX's memory you used:
- 3225 strings out of 493089
- 41859 string characters out of 6134841
- 117318 words of memory out of 5000000
- 6594 multiletter control sequences out of 15000+600000
+ 3228 strings out of 493089
+ 41844 string characters out of 6134841
+ 115332 words of memory out of 5000000
+ 6597 multiletter control sequences out of 15000+600000
  53461 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,10n,35p,838b,287s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 41i,10n,35p,879b,289s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/tex
 live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/local/tex
@@ -427,10 +416,10 @@ mf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></usr/local/texlive/2015/texmf
 onts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/ty
 pe1/urw/times/utmb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/ti
 mes/utmr8a.pfb>
-Output written on sig-alternate-sample.pdf (5 pages, 190450 bytes).
+Output written on sig-alternate-sample.pdf (4 pages, 202085 bytes).
 PDF statistics:
- 91 PDF objects out of 1000 (max. 8388607)
- 63 compressed objects within 1 object stream
+ 86 PDF objects out of 1000 (max. 8388607)
+ 59 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

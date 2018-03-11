@@ -100,7 +100,7 @@ This is an example abstract...
 
 Nowadays companies are gathering large amounts of data in different ways such as via user input, and all kinds of sensors. It's also becoming easier and easier for them to use data in all kinds of decision making, analytics, and for example in automating human-involved tasks. Problems arise when the used data is \textit{dirty}, or invalid, and thus can lead into making incorrect decisions. These can sometimes cause serious issues - especially in health care and financing sides \cite{Ilyas2015}.
 
-Humans often make data input errors via misspelling, and sensors may grab unwanted noise along the data they're designed to catch. In fact, over $25$\% of critical data in the world?s top companies is flawed \cite{Khayyat2015}. Not to mention that today, the variety of data is also large which leads into collecting data of different formats together. \textit{Data cleansing} is the solution to the above-mentioned problem. For data processors, understanding data cleansing, and the problems it tries to solve is thus naturally important. 
+Humans often make data input errors via misspelling, and sensors may grab unwanted noise along the data they're designed to catch. In fact, over $25$\% of critical data in the world's top companies is flawed \cite{Khayyat2015}. Not to mention that today, the variety of data is also large which leads into collecting data of different formats together. \textit{Data cleansing} is the solution to the above-mentioned problem. For data processors, understanding data cleansing, and the problems it tries to solve is thus naturally important. 
 
 Data cleansing is a research field that explores ways to improve \textit{quality} of dirty data. If data isn't of high quality, it means that it has usually both \textit{schema}, and \textit{instance} level problems \cite{Rahm2000}. Another used definition for dirty data is that it doesn't meets its usage needs. A simple example of that would be such that a front developer of a service can't provide end-users a good UI because the server cannot deliver all kinds of useful data because there are faults in the way the data is stored in the database.
 
@@ -110,7 +110,7 @@ Figure \ref{rahm1} shows how \textit{single-source problems} with data quality c
 	\centering
 
 	\includegraphics[scale=0.8]{figures/rahm1.png}
-	\caption{Single-source data quality problems} \label{rahm1}
+	\caption{Single-source data quality problems \cite{Rahm2000}} \label{rahm1}
 \end{figure}
 
 Instance level problems in data arise as attributes of data \textit{tuples} being out of their scope, or just wrong. These contain misspellings, and \textit{outliers} by for example possible sensor errors, and processing errors before gathered data is actually stored. These problems can be detected via \textit{quantitative techniques} related to data cleansing that focus on error detection and correction based on numerical attributes of data \cite{Hellerstein2008}. If for example some framework can reduce multi-dimensional data in two-dimensional space, it's fairly easy for an expert to detect outliers in that space, and thus possible errors in the data.
@@ -122,54 +122,85 @@ Schema level problems on the other hand arise as \textit{violations} of \textit{
 
 \textit{Duplicate} (or partically duplicate) data entries can also be considered both schema level, and instance level data quality problems \cite{Ilyas2015} (p. $283$). They usually appear as the same entries with some attributes having different values from each other, and thus should be classified as instance level problems. They can however be detected by similar rules that are used for other schema level problems. Consider us having a person register where each person has its name, phone number, address, zip code ($ZIP$), and state ($STATE$) defined. Now we could have two tuples with the same name, phone number, and address, but different zip codes. An error between these two tuples found be detected by rule \ref{eq1}, and could be solved either automatically, or via human interaction. 
 
-This seminar report focuses on highly scalable \textit{qualitative} data cleansing techniques. They focus on detecting data errors in \textit{big data} via rules such as ICs, FDs, \textit{CFDs} (conditional functional dependencies), and \textit{DCs} (denial constraints). Ilays and Chu well-define the constraints in their paper \cite{Ilyas2015} (p. 287 - 301). In traditional ways, the data errors are detected by algorithms that compare data tuples trying to find violations based only on user-defined rules, or also such rules or \textit{patterns} that the data cleansing framework itself generates by processing the data. The found errors can afterwards be fixed either via totally automatic, or (partially) human guided procedures.
+This seminar report focuses on highly scalable \textit{qualitative} data cleansing techniques. They focus on detecting data errors in \textit{big data} via rules such as FDs, \textit{CFDs} (conditional functional dependencies), and \textit{DCs} (denial constraints). Ilays and Chu well-define these in their paper \cite{Ilyas2015} (p. 287 - 301). In traditional ways, the data errors are detected by algorithms that compare data tuples trying to find violations based only on user-defined rules, or also such rules or \textit{patterns} that the data cleansing framework itself generates by processing the data. The found errors can afterwards be fixed either via totally automatic, or (partially) human guided procedures.
 
 The rest of the report is divided as follows: in Section $2$, I will introduce recent findings related to big data cleansing, and where we stand on the field at the moment. Section $3$ gives background for following sections by introducing different kinds of techniques related to handling big data, but also for getting more accurate data cleansing results. Section $4$ discusses recent frameworks for scalable data cleansing big data, and in Section 5, I have a brief conclusion to summarise the report.
 
 % TODO: section 5: omat ideat, algoritmit yms., conclusion: section 6
 
+% 2. LITERATURE REVIEW
+\section{Literature review}
 
-%The rest of the report is will be divided as follows. In section 2, I will summarise, where we are with big data cleansing at the moment. I'll introduce several big data cleansing techniques in more detail. The techniques can practically be divided into \textit{de-duplication} methods, \textit{sampling}, \textit{incremental cleansing}, and \textit{distributed cleansing}. I'll also discuss what kinds of problems are yet to be solved. 
+Data cleansing has been an interesting topic for decades, and there has been a large amount of research on the field in the recent years,  Extensive summary from $2015$ by Ilyas and Chu \cite{Ilyas2015} discusses recent techniques on both error detection and repairing on relational data. The errors are generally detected in data as violations of rules such as FDs, CFDs and DCs. They define violation respect to a rule $r$ being the minimal subset of database cells such that at least one of the cells has to be modified to satisfy $r$. Here cell stands for an attribute value of a tuple (row). The same definition can of course be extended to non-relational, but structured data that NoSQL document databases can consist of.
 
-% skaalautuvuus --> oletuksia, dataa usealla 'saitilla', holistic vs. non-holistic cleansing, ... ?
+The manual construction of data quality rules such as FDs, CFDs and DCs is time-consuming and requires lots of domain expertise. Thus having automatic tools for their generation is essential \cite{Chu2016-2}. Previously implemented $TANE$ and $FASTFD$ that Ilyas and Chu discuss \cite{Ilyas2015} can be used for finding FDs based on a relational data, and its schema, while $FASTDC$ can be used for finding DCs.
 
-% In section 3, I will go through actual implementations for big data cleansing techniques. BigDansing, KATARA(?), ML frameworks, ... Section 4 discusses weak points in the papers, and in section 5, I show my own ideas to the research problem. Finally section 6 summarises the whole report. 
 
+
+
+They can be constructed either manually by experts, or by using 
+
+
+The errors are generally detected in data as violations of rules such as FDs, CFDs and DCs. They define violation respect to a rule $r$ being the minimal subset of database cells such that at least one of the cells has to be modified to satisfy $r$. Here cell stands for an attribute value of a tuple (row). The same definition can of course be extended to non-relational, but structured data that NoSQL document databases can consist of.
+
+Based on the above definition, they introduce algorithms such as $FASTFD$ for discovering FDs based on a dataset and its schema (p. 294), and its extension for CFD discovery.  
+
+
+
+Figure \ref{chu2} represents their classification of qualitative error detection techniques.
+
+\begin{figure*}
+	\centering
+
+	\includegraphics[scale=0.8]{figures/chu2.png}
+	\caption{Data repairing techniques \cite{Chu2016}} \label{chu2}
+\end{figure*}
+
+The errors are generally detected in data as violations of rules such as FDs, CFDs and DCs. The detection itself can be automatic, or human guided, and the layer where the 
+
+
+They define violation respect to a rule $r$ being the minimal subset of database cells such that at least one of the cells has to be modified to satisfy $r$. Here cell stands for an attribute value of a tuple (row). The same definition can of course be extended to non-relational, but structured data that NoSQL document databases can consist of.
+
+Based on the above definition, they introduce algorithms such as $FASTFD$ for discovering FDs based on a dataset and its schema (p. 294), and its extension for CFD discovery.  
+
+
+% Data cleansing has been an interesting topic for decades \cite{Khayyat2015} although no extensive research existed before the 21st century \cite{rahm2000}. In paper from $2000$ when NoSQL didn't exist yet, Rahm and Do \cite{rahm2000} discuss data cleansing especially as a part of \textit{ETL} process (extraction-transformation-loading). In ETL process, data is extracted from various sources, it's integrated together, and eventually loaded into a data warehose for further processing. The process involves data cleansing as part of both extraction and integration phases such that in extraction phase, each source should be cleansed separately, and in integration phase, data transformations are applied on the data to format the data in a uniform way. On this phase, duplicate records from various sources should also be tracked, and merged together.
+
+
+
+% -----------------------
+% KERRO NÄISTÄ
 
 % Most data cleansing frameworks involve human interaction: either by training a ML classifier built-in the framework to solve conflicts on its own, or solving conflicts themselves
 
 %Detecting, and removing (partially) duplicate entries is one of the key areas in data cleansing, and frameworks such as \textit{DeDoop} and \textit{Dis-Dedup} which is examined in section $4$ are specifically designed for their detection.
 
-%Qualitative techniques are used to detect and correct data errors based on \textit{integrity constraints}, or \textit{patterns} in the data \cite{Ilyas2015}. In a database, an example of an integrity constraint could be such that each person should have unique social security number. A pattern on the other hand could be such that for each person, their ZIP code would define the city they live in. If we have several people with ZIP code being $00100$, and city as Helsinki, and yet another person with same ZIP code, but city being Turku, the latter mentioned person should be considered erroneous.
-
-
-
-% 2. LITERATURE REVIEW
-\section{Literature review}
-
-- Määrittele ensin dirty / low quality data\\
-- Seuraavaksi hyvä selittää, mistä qualitative data analysisissä ja sen eri tekniikoista on kyse
-
 % 2015: TRENDS ja muiden artikkelien läpikäynti. Osan asioista voi jättää big datalle tarkoitettuun osioon.
 % Selkeä aikajatkumo lähivuosien tapahtumista (ICs, frameworkejä näiden päälle, skaalautuminen big datan käsittelyyn (mm. BigDansing), tarkempaa tutkimusta työkalujen tarkkuudesta virheiden korjaukseen (2016: "Where are we now?"), työkalujen yhdistämistä tarkkuutta parantamalla, 2017: "HoloClean"
 % 2017: CleanM (miten suhtautuu jatkumoon), 2017: CLAMS (menee jonkin verran asian ohi). Pitäisikö vain mainita, mutta ei mennä kovin tarkasti tämän ongelman ratkaisuun? Johtopäätösten yheydessä voi mainita ongelmasta unstructured datan käsittelyyn liittyen (samoin kuin se, että dataa usealla saitilla jota puhdistaa).
 
+%The rest of the report is will be divided as follows. In section 2, I will summarise, where we are with big data cleansing at the moment. I'll introduce several big data cleansing techniques in more detail. The techniques can practically be divided into \textit{de-duplication} methods, \textit{sampling}, \textit{incremental cleansing}, and \textit{distributed cleansing}. I'll also discuss what kinds of problems are yet to be solved. 
+
+% skaalautuvuus --> oletuksia, dataa usealla 'saitilla', holistic vs. non-holistic cleansing, ... ?
+% -----------------------
 
 
-\section{Articles}
-
-\textit{Quantitative Data Cleaning for Large Databases}
-
-- Quanttitative data (outlier detection)
-- Categorical data (same thing mentioned with a different name, misspellings)
 
 
-\textit{An Efficient Data Cleaning Algorithm Based on Attributes Selection}
+% 2008
+%\textit{Quantitative Data Cleaning for Large Databases}
 
-- SNM \& MPN algorithms for duplicate records detection
-- Improved algorithm for duplicate error detection
-- O(n log n)
-- not suitable for big data?
+%- Quantitative data (outlier detection)
+%- Categorical data (same thing mentioned with a different name, misspellings)
+
+
+% 2011
+%\textit{An Efficient Data Cleaning Algorithm Based on Attributes Selection}
+
+%- SNM \& MPN algorithms for duplicate records detection
+%- Improved algorithm for duplicate error detection
+%- O(n log n)
+%- not suitable for big data?
 
 
 \textit{Qualitative Data Cleaning}
@@ -187,10 +218,6 @@ a relational schema, since two duplicate tuples can be seen as a violation
 of the key constraint.
 
 \subsection{Error detection}
-
-- A violation with respect to an IC is defined as the minimal subset
-of database cells, such that at least one of the cells has to be modified
-to satisfy the IC, where a cell is an attribute value of a tuple.
 
 - Given a relational database instance I of schema R
 and a set of integrity constraints ?, we need to find another database
@@ -420,33 +447,6 @@ $\pi$ & 1 in 5& Common in math\\ \hline
 $\Psi^2_1$ & 1 in 40,000& Unexplained usage\\
 \hline\end{tabular}
 \end{table}
-
-\begin{table*}
-\centering
-\caption{Some Typical Commands}
-\begin{tabular}{|c|c|l|} \hline
-Command&A Number&Comments\\ \hline
-\texttt{{\char'134}alignauthor} & 100& Author alignment\\ \hline
-\texttt{{\char'134}numberofauthors}& 200& Author enumeration\\ \hline
-\texttt{{\char'134}table}& 300 & For tables\\ \hline
-\texttt{{\char'134}table*}& 400& For wider tables\\ \hline\end{tabular}
-\end{table*}
-end the environment with {table*}, NOTE not {table}!
-
-As was the case with tables, you may want a figure
-that spans two columns.  To do this, and still to
-ensure proper ``floating'' placement of tables, use the environment
-\textbf{figure*} to enclose the figure and its caption.
-and don't forget to end the environment with
-{figure*}, not {figure}!
-
-\begin{figure*}
-\centering
-\includegraphics{flies}
-\caption{A sample black and white graphic
-that needs to span two columns of text.}
-\end{figure*}
-
 
 \begin{figure}
 \centering
