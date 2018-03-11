@@ -5,13 +5,6 @@ X.~Chu and I.~F. Ilyas.
 \newblock Qualitative data cleaning.
 \newblock {\em Proc. VLDB Endow.}, 9(13):1605--1608, Sept. 2016.
 
-\bibitem{Chu2016}
-X.~Chu, I.~F. Ilyas, S.~Krishnan, and J.~Wang.
-\newblock Data cleaning: Overview and emerging challenges.
-\newblock In {\em Proceedings of the 2016 International Conference on
-  Management of Data}, SIGMOD '16, pages 2201--2206, New York, NY, USA, 2016.
-  ACM.
-
 \bibitem{Hellerstein2008}
 J.~M. Hellerstein.
 \newblock Quantitative data cleaning for large databases, 2008.
