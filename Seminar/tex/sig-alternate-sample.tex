@@ -64,17 +64,7 @@
 \maketitle
 
 \begin{abstract}
-
-This paper provides a sample of a \LaTeX\ document which conforms,
-somewhat loosely, to the formatting guidelines for
-ACM SIG Proceedings. It is an {\em alternate} style which produces
-a {\em tighter-looking} paper and was designed in response to
-concerns expressed, by authors, over page-budgets.
-It complements the document \textit{Author's (Alternate) Guide to
-Preparing ACM SIG Proceedings Using \LaTeX$2_\epsilon$\ and Bib\TeX}.
-This source file has been written with the intention of being
-compiled under \LaTeX$2_\epsilon$\ and BibTeX.
-
+This is an example abstract...
 \end{abstract}
 
 %
@@ -116,18 +106,25 @@ Data cleansing is a research field that explores ways to improve \textit{quality
 
 Figure \ref{rahm1} shows how \textit{single-source problems} with data quality can yet be divided into schema and instance level data problems. Single-source problems simply stand for such that can occur in data that is stored in a single site with possible data replication on the database side. The same problems can also arise in \textit{multi-source} systems where the data may also be scattered across several sites. Today, there is no good solution for cleaning huge amounts of data in multi-source systems although some research towards this has been made \cite{Ilyas2015} (p. $379$).
 
+\begin{figure}
+	\centering
+
+	\includegraphics[scale=0.8]{figures/rahm1.png}
+	\caption{Single-source data quality problems} \label{rahm1}
+\end{figure}
+
 Instance level problems in data arise as attributes of data \textit{tuples} being out of their scope, or just wrong. These contain misspellings, and \textit{outliers} by for example possible sensor errors, and processing errors before gathered data is actually stored. These problems can be detected via \textit{quantitative techniques} related to data cleansing that focus on error detection and correction based on numerical attributes of data \cite{Hellerstein2008}. If for example some framework can reduce multi-dimensional data in two-dimensional space, it's fairly easy for an expert to detect outliers in that space, and thus possible errors in the data.
 
 Schema level problems on the other hand arise as \textit{violations} of \textit{rules} such as \textit{integrity constaints} (IC), and \textit{functional dependencies} (FD) in the data \cite{Ilyas2015} (p. $289 - 291$). As an example, functional dependency
 \begin{equation}
-  $ZIP \rightarrow STATE$ \label{eq1}
-\end{equation} defines a constraint between data attributes $ZIP$ and $STATE$ such that $ZIP$ implies the $STATE$. In other words, if we had a dataset with two tuples having the same $ZIP$ attribute, but different values of $STATE$, based on trusting \ref{eq1}, at least one of them is erroneous.
+  ZIP \rightarrow STATE \label{eq1}
+\end{equation} defines a constraint between data attributes $ZIP$ and $STATE$ such that $ZIP$ implies the $STATE$. In other words, if we had a dataset with two tuples having the same $ZIP$ attribute, but different values of $STATE$, based on trusting rule \ref{eq1}, at least one of them is erroneous.
 
 \textit{Duplicate} (or partically duplicate) data entries can also be considered both schema level, and instance level data quality problems \cite{Ilyas2015} (p. $283$). They usually appear as the same entries with some attributes having different values from each other, and thus should be classified as instance level problems. They can however be detected by similar rules that are used for other schema level problems. Consider us having a person register where each person has its name, phone number, address, zip code ($ZIP$), and state ($STATE$) defined. Now we could have two tuples with the same name, phone number, and address, but different zip codes. An error between these two tuples found be detected by rule \ref{eq1}, and could be solved either automatically, or via human interaction. 
 
 This seminar report focuses on highly scalable \textit{qualitative} data cleansing techniques. They focus on detecting data errors in \textit{big data} via rules such as ICs, FDs, \textit{CFDs} (conditional functional dependencies), and \textit{DCs} (denial constraints). Ilays and Chu well-define the constraints in their paper \cite{Ilyas2015} (p. 287 - 301). In traditional ways, the data errors are detected by algorithms that compare data tuples trying to find violations based only on user-defined rules, or also such rules or \textit{patterns} that the data cleansing framework itself generates by processing the data. The found errors can afterwards be fixed either via totally automatic, or (partially) human guided procedures.
 
-The rest of the report is divided as follows: in section $2$, I will introduce recent findings related to big data cleansing, and where we stand on the field at the moment. Section $3$ gives background for following sections by introducing different kinds of techniques related to handling big data, but also for getting more accurate data cleansing results. Section $4$ discusses recent frameworks for scalable data cleansing big data, and in section 5, I have a brief conclusion to summarise the report.
+The rest of the report is divided as follows: in Section $2$, I will introduce recent findings related to big data cleansing, and where we stand on the field at the moment. Section $3$ gives background for following sections by introducing different kinds of techniques related to handling big data, but also for getting more accurate data cleansing results. Section $4$ discusses recent frameworks for scalable data cleansing big data, and in Section 5, I have a brief conclusion to summarise the report.
 
 % TODO: section 5: omat ideat, algoritmit yms., conclusion: section 6
 

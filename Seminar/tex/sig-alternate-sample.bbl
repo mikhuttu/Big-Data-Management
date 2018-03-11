@@ -9,4 +9,17 @@ I.~F. Ilyas and X.~Chu.
 \newblock Trends in cleaning relational data: Consistency and deduplication.
 \newblock {\em Found. Trends databases}, 5(4):281--393, Oct. 2015.
 
+\bibitem{Khayyat2015}
+Z.~Khayyat, I.~F. Ilyas, A.~Jindal, S.~Madden, M.~Ouzzani, P.~Papotti, J.-A.
+  Quian{\'e}-Ruiz, N.~Tang, and S.~Yin.
+\newblock Bigdansing: A system for big data cleansing.
+\newblock In {\em Proceedings of the 2015 ACM SIGMOD International Conference
+  on Management of Data}, SIGMOD '15, pages 1215--1230, New York, NY, USA,
+  2015. ACM.
+
+\bibitem{Rahm2000}
+E.~Rahm and H.~H. Do.
+\newblock Data cleaning: Problems and current approaches.
+\newblock {\em IEEE Data Engineering Bulletin}, 23:2000, 2000.
+
 \end{thebibliography}
