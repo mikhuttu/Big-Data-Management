@@ -108,7 +108,6 @@ Figure \ref{rahm1} shows how \textit{single-source problems} with data quality c
 
 \begin{figure}
 	\centering
-
 	\includegraphics[scale=0.8]{figures/rahm1.png}
 	\caption{Single-source data quality problems \cite{Rahm2000}}
 	\label{rahm1}
@@ -145,18 +144,18 @@ The manual construction of data quality rules such as FDs, CFDs and DCs is time-
 
 %\begin{figure*}
 %	\centering
-%
 %	\includegraphics[scale=0.8]{figures/chu2.png}
-%	\caption{Data repairing techniques \cite{Chu2016}} \label{chu2}
+%	\caption{Data repairing techniques \cite{Chu2016}}
+%     \label{chu2}
 %\end{figure*}
 
-The following part of the report is yet to be written out. But the plan was to especially discuss recent frameworks for error detection with relatively small datasets, and then introduce more recent, scalable ones like BigDansing (distributed rule-based error detection and correcting), SampleClean (probability based fixed data sampling while having dirty database on the background), DeDoop / Dis-Dedup (frameworks specifically designed for duplicate tuples detection), and HoloClean. HoloClean is by far the most interesting of the above-mentioned frameworks. This is because it's designed to be applicable for detecting errors that are untrackable by comparing tuples with each other by using only a single rule. 
+The following part of the report is yet to be written out. But the plan was to especially discuss recent frameworks for error detection with relatively small datasets, and then introduce more recent, scalable ones like BigDansing (distributed rule-based error detection and correcting), SampleClean (probability based fixed data sampling while having dirty database on the background), DeDoop / Dis-Dedup (frameworks specifically designed for duplicate tuples detection), and HoloClean. HoloClean is by far the most interesting of the above-mentioned frameworks. This is because it's designed to be applicable for detecting errors that are untrackable by comparing tuples with each other by using only a single rule. \cite{Ilyas2015}.
 
-Abedjan et al. show in their research paper from $2016$ that even though frameworks such as BigDansing are highly scalable, and can be applied to cleansing all kinds of datasets, they can track only approximately $40$ \% of all possible errors - even with fully optimised configuration parameters. If an expert is however used to cleanse data by applying several frameworks in the right order for specific data cleansing tasks, much more than $40$ \% of the possible errors are trackable, but the cleansing accuracy still hardly reaches even $70$ \% \ref{Abedjan2016}.
+Abedjan et al. show in their research paper from $2016$ that even though frameworks such as BigDansing are highly scalable, and can be applied to cleansing all kinds of datasets, they can track only approximately $40$\% of all possible errors - even with fully optimised configuration parameters. If an expert is however used to cleanse data by applying several frameworks in the right order for specific data cleansing tasks, much more than $40$\% of the possible errors are trackable, but the cleansing accuracy still hardly reaches even $70$\% \cite{Abedjan2016}.
 
-This specific research probably inspired partially the same research team in designing HoloClean of which purpose was to overcome the long lasted challenges with data cleansing tools not achieving good cleansing accuracy. According to the Rekatsinas et al., HoloClean achieves over twice the accuracy of existing state-of-art methods with average precision of $90$\% \ref{Rekatsinas2017}. What makes HoloClean so much better than the existing state-of-art methods is that accordingly to its name, it's a \textit{holistic} data cleansing framework. Holisticity means that it can do tuple-based comparisons by not just using one rule at the time, but the set of all defined rules.
+This specific research probably inspired partially the same research team in designing HoloClean of which purpose was to overcome the long lasted challenges with data cleansing tools not achieving good cleansing accuracy. According to the Rekatsinas et al., HoloClean achieves over twice the accuracy of existing state-of-art methods with average precision of $90$\% \cite{Rekatsinas2017}. What makes HoloClean so much better than the existing state-of-art methods is that accordingly to its name, it's a \textit{holistic} data cleansing framework. Holisticity means that it can do tuple-based comparisons by not just using one rule at the time, but the set of all defined rules.
 
-Holisticity in data cleansing was no way a new innovation. Chu et al. published a research paper on the topic in 2013 \ref{Chu2013}. For now, I haven't done enough research to find out, why HoloClean wasn't invented sooner though. Perhaps the real need for it wasn't really known before $2016$ when Abedjan et al. published their work about cleansing accuracy going significantly up when carefully selecting, which data cleansing frameworks to use, for what tasks and in what order \ref{Abedjan2016}.
+Holisticity in data cleansing was no way a new innovation. Chu et al. published a research paper on the topic in 2013 \cite{Chu2013}. For now, I haven't done enough research to find out, why HoloClean wasn't invented sooner though. Perhaps the real need for it wasn't really known before $2016$ when Abedjan et al. published their work about cleansing accuracy going significantly up when carefully selecting, which data cleansing frameworks to use, for what tasks and in what order \cite{Abedjan2016}.
 
 
 

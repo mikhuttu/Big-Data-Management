@@ -1,9 +1,21 @@
 \begin{thebibliography}{1}
 
+\bibitem{Abedjan2016}
+Z.~Abedjan, X.~Chu, D.~Deng, R.~C. Fernandez, I.~F. Ilyas, M.~Ouzzani,
+  P.~Papotti, M.~Stonebraker, and N.~Tang.
+\newblock Detecting data errors: Where are we and what needs to be done?
+\newblock {\em Proc. VLDB Endow.}, 9(12):993--1004, Aug. 2016.
+
 \bibitem{Chu2016-2}
 X.~Chu and I.~F. Ilyas.
 \newblock Qualitative data cleaning.
 \newblock {\em Proc. VLDB Endow.}, 9(13):1605--1608, Sept. 2016.
+
+\bibitem{Chu2013}
+X.~Chu, I.~F. Ilyas, and P.~Papotti.
+\newblock Holistic data cleaning: Putting violations into context.
+\newblock In {\em 2013 IEEE 29th International Conference on Data Engineering
+  (ICDE)}, pages 458--469, April 2013.
 
 \bibitem{Hellerstein2008}
 J.~M. Hellerstein.
@@ -26,5 +38,10 @@ Z.~Khayyat, I.~F. Ilyas, A.~Jindal, S.~Madden, M.~Ouzzani, P.~Papotti, J.-A.
 E.~Rahm and H.~H. Do.
 \newblock Data cleaning: Problems and current approaches.
 \newblock {\em IEEE Data Engineering Bulletin}, 23:2000, 2000.
+
+\bibitem{Rekatsinas2017}
+T.~Rekatsinas, X.~Chu, I.~F. Ilyas, and C.~R{\'e}.
+\newblock Holoclean: Holistic data repairs with probabilistic inference.
+\newblock {\em Proc. VLDB Endow.}, 10(11):1190--1201, Aug. 2017.
 
 \end{thebibliography}
