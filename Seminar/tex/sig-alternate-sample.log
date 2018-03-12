@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.25)  11 MAR 2018 21:34
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.25)  12 MAR 2018 18:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -325,45 +325,55 @@ Overfull \hbox (6.33643pt too wide) in paragraph at lines 121--122
 ZIP$ \T1/aer/m/n/9 and $\OML/cmm/m/it/9 STATE$
  []
 
-
-Overfull \hbox (2.92982pt too wide) in paragraph at lines 125--126
-\T1/aer/m/n/9 func-tional de-pen-den-cies), and \T1/aer/m/it/9 DCs \T1/aer/m/n/
-9 (de-nial con-straints). Ilays
- []
-
 [1{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
  <./figures/rahm1.png>]
-Overfull \hbox (4.28949pt too wide) in paragraph at lines 127--128
-\T1/aer/m/n/9 fixed ei-ther via to-tally au-to-matic, or (par-tially) hu-man gu
-ided
- []
 
-(./sig-alternate-sample.bbl) [2] (./sig-alternate-sample.aux) ) 
+LaTeX Warning: Reference `chu2' on page \thepage  undefined on input line 146.
+
+<figures/chu2.png, id=19, 393.47pt x 166.6225pt>
+File: figures/chu2.png Graphic file (type png)
+ <use figures/chu2.png>
+Package pdftex.def Info: figures/chu2.png used on input line 150.
+(pdftex.def)             Requested size: 314.77641pt x 133.29817pt.
+
+
+LaTeX Warning: Citation `Chu2016' on page \thepage  undefined on input line 151
+.
+
+[2] (./sig-alternate-sample.bbl) [3 <./figures/chu2.png>]
+(./sig-alternate-sample.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ ) 
 Here is how much of TeX's memory you used:
- 3162 strings out of 493089
- 40975 string characters out of 6134841
- 115330 words of memory out of 5000000
- 6555 multiletter control sequences out of 15000+600000
+ 3171 strings out of 493089
+ 41102 string characters out of 6134841
+ 115337 words of memory out of 5000000
+ 6563 multiletter control sequences out of 15000+600000
  50037 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 41i,10n,35p,1067b,287s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texl
-ive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/texlive/2015/texmf-
-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/texlive/2015/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texlive/2015/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/2015/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2015/texmf-dist/font
-s/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2015/texmf-dist/fonts/
-type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/u
-rw/helvetic/uhvr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/time
-s/utmb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw/times/utmr8a.p
-fb>
-Output written on sig-alternate-sample.pdf (2 pages, 113024 bytes).
+ 41i,10n,35p,885b,287s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2015/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/local/tex
+live/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/local/texli
+ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/
+2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/local/texlive/201
+5/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/local/texlive/2015/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb></usr/local/texlive/2015/te
+xmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2015/texmf-dis
+t/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2015/texmf-dist/fonts
+/type1/urw/times/utmb8a.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/urw
+/times/utmr8a.pfb>
+Output written on sig-alternate-sample.pdf (3 pages, 146217 bytes).
 PDF statistics:
- 51 PDF objects out of 1000 (max. 8388607)
- 35 compressed objects within 1 object stream
+ 60 PDF objects out of 1000 (max. 8388607)
+ 40 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
